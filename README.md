@@ -175,6 +175,14 @@ The last stage of adding code to the `master` branch timeline is for someone els
 3. Two eyes are better than one when it comes to checking for errors and mishaps.
 4. It makes it easier to diagnose and fix problems before they *really* become a problem.
 
+To make a Pull Request, go to the GitHub repository online, and on the left hand side of the page, select the dropdown that says *Branch: _____* and select your branch.
+
+You can then hit the button that says *New pull request* that appears right next to that dropdown. It will then bring you to a new page with a form. For the title, leave a summary of what your code does in the Pull Request. In the comment box, go a bit more into detail into its functionality and what you added.
+
+On the right hand side, select the *Reviewers* tag, which will open up a multi-select dropdown menu. Select a mentor's username, and they will review it with you as well have another team member look over it.
+
+Then hit the green *Create Pull Request* button and wait for someone else on the team to review your code!
+
 [control-system]: https://wpilib.screenstepslive.com/s/currentCS
 [WPI-setup]: https://wpilib.screenstepslive.com/s/currentCS/m/getting_started/l/599679-installing-eclipse-c-java
 [git-install]: https://git-scm.com/download/win
