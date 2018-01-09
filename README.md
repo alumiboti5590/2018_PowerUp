@@ -13,6 +13,12 @@ Note that terminal commands include the `$`, but should not be included int the 
     + [Cloning the Repository](#cloning-the-repository)
     + [Importing Into Eclipse](#importing-into-eclipse)
   * [Version Control with `git` and GitHub](#version-control-with-git-and-github)
+    + [A Brief Overview of `git`](#a-brief-overview-of-git)
+    + [Getting an Overview of Your Situation](#getting-an-overview-of-your-situation)
+    + [Pulling the Most Recent Code](#pulling-the-most-recent-code)
+    + [Making a Change](#making-a-change)
+    + [Adding the files to GitHub](#adding-the-files-to-github)
+   
 
 ## Basic Command Line Commands
 
