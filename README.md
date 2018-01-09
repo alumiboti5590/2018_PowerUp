@@ -18,6 +18,7 @@ Note that terminal commands include the `$`, but should not be included int the 
     + [Pulling the Most Recent Code](#pulling-the-most-recent-code)
     + [Making a Change](#making-a-change)
     + [Adding the files to GitHub](#adding-the-files-to-github)
+    + [Code Review & Pull Request](#code-review--pull-request)
    
 
 ## Basic Command Line Commands
