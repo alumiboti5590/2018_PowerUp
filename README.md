@@ -6,6 +6,14 @@ The code is divided into several packages, each responsible for a different aspe
 
 Note that terminal commands include the `$`, but should not be included int the command. They simply show that they are a terminal command and not programming code. Exclude the `$` when you run it.
 
+# Table of Contents
+- [2018 FIRST Power Up Alumiboti Robot Code](#2018-first-power-up-alumiboti-robot-code)
+  * [Basic Command Line Commands](#basic-command-line-commands)
+  * [Importing Code Into Eclipse](#importing-code-into-eclipse)
+    + [Cloning the Repository](#cloning-the-repository)
+    + [Importing Into Eclipse](#importing-into-eclipse)
+  * [Version Control with `git` and GitHub](#version-control-with-git-and-github)
+
 ## Basic Command Line Commands
 
 If needed, some basic command line and Git Bash instructions are below. A **directory** is a folder. Anything in `<>` should be seen as something *you* need to fill in for the command to run, so `cd <directory>` would become `cd Desktop` to change to the desktop.
