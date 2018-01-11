@@ -13,7 +13,7 @@ public class RobotMap {
 	public static final int DT_LEFT_CONTROLLER_PWM = 1;
 	public static final int DT_RIGHT_CONTROLLER_PWM = 0;
 
-	public static final int GYROSCOPE_ANALOG_PORT = 1;
+	public static final int GYROSCOPE_ANALOG_PORT = 0;
 	
 	public static final int DT_LEFT_ENCODER_SIGNAL_INPUT = 0;
 	public static final int DT_LEFT_ENCODER_SIGNAL_OUTPUT = 1;

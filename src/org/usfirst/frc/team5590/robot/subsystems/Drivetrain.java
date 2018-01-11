@@ -1,15 +1,14 @@
 package org.usfirst.frc.team5590.robot.subsystems;
 
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import org.usfirst.frc.team5590.robot.Library;
 import org.usfirst.frc.team5590.robot.Robot;
 import org.usfirst.frc.team5590.robot.RobotMap;
+import org.usfirst.frc.team5590.robot.autonomous.TurnAngle;
 import org.usfirst.frc.team5590.robot.commands.JoystickDrive;
 import org.usfirst.frc.team5590.robot.components.ADXRS453Gyro;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
@@ -21,7 +20,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Drivetrain extends Subsystem {
 	
-	private final static Logger logger = Logger.getLogger(Drivetrain.class.getName());
+	private final static Logger logger = Logger.getLogger(TurnAngle.class.getName());
 
 	/**
 	 * Constants
@@ -33,7 +32,7 @@ public class Drivetrain extends Subsystem {
 	private static final double START_SCALE_DOWN_DISTANCE_INCHES = 24;
 	
 	// How many degrees per pulse the encoder measures
-	private static final boolean INVERT_LEFT_ENCODER = true;
+	private static final boolean INVERT_LEFT_ENCODER = false;
 	private static final boolean INVERT_RIGHT_ENCODER = true;
 	
 	// 20 pulse per rev
@@ -62,8 +61,8 @@ public class Drivetrain extends Subsystem {
 	private RobotDrive robotDrive; // Allows for us to drive like a tank
 	public static final ADXRS453Gyro gyro = new ADXRS453Gyro();
 	public static final BuiltInAccelerometer accel = new BuiltInAccelerometer();
-	private Encoder leftEncoder;
-	private Encoder rightEncoder;
+	public Encoder leftEncoder;
+	public Encoder rightEncoder;
 
 	/**
 	 * Constructor for the Drivetrain
@@ -144,6 +143,8 @@ public class Drivetrain extends Subsystem {
 
 		// Set the robot motors
 		robotDrive.tankDrive(validLeft, validRight);
+	
+		logger.info("(" + leftEncoder.getDistance() + ", " + rightEncoder.getDistance() + ")");
 		
 	}
 	
@@ -166,6 +167,36 @@ public class Drivetrain extends Subsystem {
 		return false;
 	}
 	
+	public boolean driveToDistance(double desiredDistance, double speed, double tolerance) {
+		double distance = getEncoderAverage();
+		
+		double angle = gyro.getAngle();
+		//double speed = scaleDownSpeed(speed, distance, desiredDistance);
+		
+		if (withinTolerance(distance, desiredDistance, tolerance)) {
+			this.stop();
+			return true;
+		// Still need to go farther
+		} else if (distance < desiredDistance) {
+			robotDrive.drive(speed, -angle * GYRO_SENSITIVITY);
+			
+		// Overdriven
+		} else {
+			robotDrive.drive(-speed, -angle * GYRO_SENSITIVITY);
+		}
+		
+		return false;
+	}
+	
+	private double scaleDownSpeed(double speed, double distanceCovered, double desiredDistance) {
+		double distance = desiredDistance - distanceCovered;
+		if (Math.abs(distance) < START_SCALE_DOWN_DISTANCE_INCHES) {
+			return speed / START_SCALE_DOWN_DISTANCE_INCHES - distance;
+		}
+		
+		return speed;
+	}
+	
 	/**
 	 * Centers the robot according to the gyroscope, then resets the 
 	 */
@@ -179,6 +210,10 @@ public class Drivetrain extends Subsystem {
 	
 	private boolean withinTolerance(double value, double goal, double tolerance) {
 		return Math.abs(goal - value) <= tolerance;
+	}
+	
+	public double getEncoderAverage() {
+		return Library.average(new double[] {leftEncoder.getDistance(), rightEncoder.getDistance()});
 	}
 
 	/**

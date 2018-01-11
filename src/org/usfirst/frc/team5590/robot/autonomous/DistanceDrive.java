@@ -10,84 +10,86 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class TurnAngle extends Command {
+public class DistanceDrive extends Command {
 
 	// Command basics: Logging and state
-	private final static Logger logger = Logger.getLogger(TurnAngle.class.getName());
+	private final static Logger logger = Logger.getLogger(DistanceDrive.class.getName());
+
 	protected enum State {
-		INITIALIZING,
-		PERFORMING,
-		CLEANING,
-		COMPLETE
+		INITIALIZING, PERFORMING, CLEANING, COMPLETE
 	}
+
 	private State state = State.INITIALIZING;
 
 	private double speed = .5;
-	private double degrees = 0;
-	
-	// Sampling to get exact
-	
-	private static final int DESIRED_SAMPLES = 5;
-	private int validSamples = 0;
-	private double tolerance = 2;
-	
+	private double distance = 0;
 
-	public TurnAngle(double degrees) {
-		if (Math.abs(degrees) > 180) {
-			degrees = degrees % 360;
-		}
-		this.degrees = degrees;
+	// Sampling to get exact
+
+	private static final int DESIRED_SAMPLES = 3;
+	private int validSamples = 0;
+	private double tolerance = 4;
+
+	public DistanceDrive(double distance) {
+		this.distance = distance;
 		requires(Robot.drivetrain);
 	}
 	
-	public TurnAngle(double degrees, double tolerance) {
-		if (Math.abs(degrees) > 180) {
-			degrees = degrees % 360;
-		}
-		this.degrees = degrees;
+	public DistanceDrive(double distance, double speed) {
+		this.speed = speed;
+		this.distance = distance;
+		requires(Robot.drivetrain);
+	}
+
+	public DistanceDrive(double distance, double speed, double tolerance) {
+		this.speed = speed;
+		this.distance = distance;
 		this.tolerance = tolerance;
 		requires(Robot.drivetrain);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		logger.info("Initializing TurnAngle Command.");
+		logger.info("Initializing DriveDistance Command.");
 		Robot.drivetrain.stop();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		switch (this.state) {
-		
+
 		case INITIALIZING:
-			if (Robot.drivetrain.recalibrate()) this.state = State.PERFORMING;
-			logger.info("Angle Initialized to " + Drivetrain.gyro.getAngle());
+			if (Robot.drivetrain.recalibrate())
+				this.state = State.PERFORMING;
+			logger.info("Drive Distance Initialized to " + Robot.drivetrain.getEncoderAverage());
 			break;
-			
+
 		case PERFORMING:
 			// Sample whether our robot is in the correct position or not.
 			// Reset the samples if out of position
-			double accurateSpeed = validSamples > 0 ? this.speed / 3 : this.speed;
-			if (Robot.drivetrain.turn(degrees, accurateSpeed, tolerance)) {
+			double accurateSpeed = validSamples > 0 ? -.01 : this.speed;
+			if (Robot.drivetrain.driveToDistance(distance, accurateSpeed, tolerance)) {
 				++validSamples;
 			} else {
 				validSamples = 0;
 			}
-			
+
 			// If we have hit our correct sample rate
-			if (validSamples >= DESIRED_SAMPLES) this.state = State.CLEANING;
+			if (validSamples >= DESIRED_SAMPLES)
+				this.state = State.CLEANING;
 			break;
-			
+
 		case CLEANING:
-			if (Robot.drivetrain.recalibrate()) this.state = State.COMPLETE;
+			if (Robot.drivetrain.recalibrate())
+				this.state = State.COMPLETE;
 			break;
-			
+
 		default:
 			Robot.drivetrain.stop();
 			this.state = State.COMPLETE;
 		}
-		
-		logger.info("Angle: " + Drivetrain.gyro.getAngle());
+
+		logger.info("Distance: " + Robot.drivetrain.getEncoderAverage());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
