@@ -1,7 +1,5 @@
 # 2018 FIRST Power Up Alumiboti Robot Code
 
-[![Documentation Status](https://readthedocs.org/projects/2018-powerup/badge/?version=latest)](http://2018-powerup.readthedocs.io/en/latest/?badge=latest)
-
 Team 5590's 2017 FRC robot code for the Power Up robot. The code is written in Java and is based off of [WPILib's Java control system][control-system].
 
 The code is divided into several packages, each responsible for a different aspect of the robot function. This README explains the function of each package, some of the variable naming conventions used, and setup instructions. Additional information about each specific class can be found in that class's java file.
