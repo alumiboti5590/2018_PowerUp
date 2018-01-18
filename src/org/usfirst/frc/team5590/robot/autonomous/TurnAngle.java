@@ -3,6 +3,7 @@ package org.usfirst.frc.team5590.robot.autonomous;
 import java.util.logging.Logger;
 
 import org.usfirst.frc.team5590.robot.Robot;
+import org.usfirst.frc.team5590.robot.autonomous.DistanceDrive.State;
 import org.usfirst.frc.team5590.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -18,6 +19,7 @@ public class TurnAngle extends Command {
 		INITIALIZING,
 		PERFORMING,
 		CLEANING,
+		STOP,
 		COMPLETE
 	}
 	private State state = State.INITIALIZING;
@@ -76,6 +78,13 @@ public class TurnAngle extends Command {
 			
 			// If we have hit our correct sample rate
 			if (validSamples >= DESIRED_SAMPLES) this.state = State.CLEANING;
+			break;
+			
+		case STOP:
+			if (Robot.drivetrain.stop()) {
+				this.state = State.CLEANING;
+				logger.info("Stopping at Angle " + Robot.drivetrain.gyro.getAngle());
+			}
 			break;
 			
 		case CLEANING:

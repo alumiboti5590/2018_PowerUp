@@ -11,9 +11,14 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class AutonomousTest extends CommandGroup {
 
-    public AutonomousTest() {
-        addSequential(new TurnAngle(-90));
-        addSequential(new DistanceDrive(72, .4));
+    public AutonomousTest(double distance, double speed, double turnAngle) {
+        //addSequential(new TurnAngle(-90));
+    	
+    		// 6 feet
+        addSequential(new DistanceDrive(distance, speed));
+        addSequential(new TurnAngle(turnAngle));
+        addSequential(new DistanceDrive(distance, speed));
+        //addSequential(new DistanceDrive(distance, speed));
         //addSequential(new TurnAngle(-45));
     }
 }

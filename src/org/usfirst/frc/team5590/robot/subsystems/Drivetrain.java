@@ -19,8 +19,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class Drivetrain extends Subsystem {
-	
-	private final static Logger logger = Logger.getLogger(TurnAngle.class.getName());
 
 	/**
 	 * Constants
@@ -40,7 +38,7 @@ public class Drivetrain extends Subsystem {
 	// 1364 pulse / sec
 	// 10 ft per sec
 	// 11.367 inch per pulse 
-	private static final double DRIVE_DISTANCE_PER_PULSE_6IN = .0879;
+	private static final double DRIVE_DISTANCE_PER_PULSE_6IN = .112316;
 	
 	// 2045 pulse / sec
 	// 10 ft per sec
@@ -63,6 +61,8 @@ public class Drivetrain extends Subsystem {
 	public static final BuiltInAccelerometer accel = new BuiltInAccelerometer();
 	public Encoder leftEncoder;
 	public Encoder rightEncoder;
+	
+	public double prevDistance = 0;
 
 	/**
 	 * Constructor for the Drivetrain
@@ -115,8 +115,18 @@ public class Drivetrain extends Subsystem {
 	/**
 	 * This method will be called to STOP the robot.
 	 */
-	public void stop() {
-		this.setSpeed(0, 0);		
+	public boolean stop() {
+		this.setSpeed(0, 0);
+		
+		// Determine if encoders have changed
+		double current = getEncoderAverage();
+		
+		if (withinTolerance(current, prevDistance, .5)) {
+			return true;
+		}
+		
+		prevDistance = current;
+		return false;
 	}
 
 	/**
@@ -143,8 +153,6 @@ public class Drivetrain extends Subsystem {
 
 		// Set the robot motors
 		robotDrive.tankDrive(validLeft, validRight);
-	
-		logger.info("(" + leftEncoder.getDistance() + ", " + rightEncoder.getDistance() + ")");
 		
 	}
 	
@@ -159,8 +167,10 @@ public class Drivetrain extends Subsystem {
 		if (withinTolerance(angle, degrees, angleTolerance)) {
 			this.stop();
 			return true;
+			
 		} else if (angle > degrees) {
 			this.setSpeed(-speed, speed);
+			
 		} else {
 			this.setSpeed(speed, -speed);
 		}
@@ -171,11 +181,13 @@ public class Drivetrain extends Subsystem {
 		double distance = getEncoderAverage();
 		
 		double angle = gyro.getAngle();
-		//double speed = scaleDownSpeed(speed, distance, desiredDistance);
+		
+		speed = scaleDownSpeed(speed, distance, desiredDistance);
 		
 		if (withinTolerance(distance, desiredDistance, tolerance)) {
 			this.stop();
 			return true;
+			
 		// Still need to go farther
 		} else if (distance < desiredDistance) {
 			robotDrive.drive(speed, -angle * GYRO_SENSITIVITY);
@@ -190,8 +202,12 @@ public class Drivetrain extends Subsystem {
 	
 	private double scaleDownSpeed(double speed, double distanceCovered, double desiredDistance) {
 		double distance = desiredDistance - distanceCovered;
-		if (Math.abs(distance) < START_SCALE_DOWN_DISTANCE_INCHES) {
-			return speed / START_SCALE_DOWN_DISTANCE_INCHES - distance;
+		double slowDownDistance = START_SCALE_DOWN_DISTANCE_INCHES;
+//		if (speed > .5) {
+//			slowDownDistance += 12;
+//		}
+		if (Math.abs(distance) < slowDownDistance) {
+			return .2;
 		}
 		
 		return speed;

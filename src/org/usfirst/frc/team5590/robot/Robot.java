@@ -5,6 +5,7 @@ import org.usfirst.frc.team5590.robot.commands.AutonomousTest;
 import org.usfirst.frc.team5590.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -23,6 +24,8 @@ public class Robot extends IterativeRobot {
 	 * Initialize the subsystems below
 	 */
 	public static final Drivetrain drivetrain = new Drivetrain();
+	
+	public static Preferences preferences;
 	
 	/**
 	 * Initialize the Input/Output controllers below
@@ -72,7 +75,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = new AutonomousTest(); //chooser.getSelected();
+		double distance = preferences.getInstance().getDouble("DriveDistance", 0);
+		double speed = preferences.getInstance().getDouble("DriveSpeed", 0);
+		double turn = preferences.getInstance().getDouble("DriveTurn", 0);
+		autonomousCommand = new AutonomousTest(distance, speed, turn); //chooser.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",

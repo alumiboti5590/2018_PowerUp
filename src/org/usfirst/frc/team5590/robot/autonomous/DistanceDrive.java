@@ -16,7 +16,7 @@ public class DistanceDrive extends Command {
 	private final static Logger logger = Logger.getLogger(DistanceDrive.class.getName());
 
 	protected enum State {
-		INITIALIZING, PERFORMING, CLEANING, COMPLETE
+		INITIALIZING, PERFORMING, STOP, CLEANING, COMPLETE
 	}
 
 	private State state = State.INITIALIZING;
@@ -26,9 +26,9 @@ public class DistanceDrive extends Command {
 
 	// Sampling to get exact
 
-	private static final int DESIRED_SAMPLES = 3;
+	private static final int DESIRED_SAMPLES = 40;
 	private int validSamples = 0;
-	private double tolerance = 4;
+	private double tolerance = 2;
 
 	public DistanceDrive(double distance) {
 		this.distance = distance;
@@ -76,7 +76,13 @@ public class DistanceDrive extends Command {
 
 			// If we have hit our correct sample rate
 			if (validSamples >= DESIRED_SAMPLES)
+				this.state = State.STOP;
+			break;
+			
+		case STOP:
+			if (Robot.drivetrain.stop()) {
 				this.state = State.CLEANING;
+			}
 			break;
 
 		case CLEANING:
