@@ -1,4 +1,4 @@
-package org.usfirst.frc.team5590.robot.autonomous;
+package org.usfirst.frc.team5590.robot.autonomous.basics;
 
 import java.util.logging.Logger;
 

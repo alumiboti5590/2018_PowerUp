@@ -1,15 +1,11 @@
 package org.usfirst.frc.team5590.robot.subsystems;
 
-import java.util.logging.Logger;
-
 import org.usfirst.frc.team5590.robot.Library;
 import org.usfirst.frc.team5590.robot.Robot;
 import org.usfirst.frc.team5590.robot.RobotMap;
-import org.usfirst.frc.team5590.robot.autonomous.TurnAngle;
 import org.usfirst.frc.team5590.robot.commands.JoystickDrive;
 import org.usfirst.frc.team5590.robot.components.ADXRS453Gyro;
 
-import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -18,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
+@SuppressWarnings("deprecation")
 public class Drivetrain extends Subsystem {
 
 	/**
@@ -26,7 +23,6 @@ public class Drivetrain extends Subsystem {
 	// Driving speeds
 	private static final double MIN_SPEED = -1.0;
 	private static final double MAX_SPEED = 1.0;
-	private static final double RECALIBRATE_SPEED = .3;
 	private static final double START_SCALE_DOWN_DISTANCE_INCHES = 24;
 	
 	// How many degrees per pulse the encoder measures
@@ -44,7 +40,7 @@ public class Drivetrain extends Subsystem {
 	// 10 ft per sec
 	// 17.0416 pulse per inch
 	// .05867 inch per pulse 
-	private static final double DRIVE_DISTANCE_PER_PULSE_4IN = .0879;
+	//private static final double DRIVE_DISTANCE_PER_PULSE_4IN = .0879;
 
 	// Gyroscope metrics
 	private static final double GYRO_SENSITIVITY = .03;
@@ -58,7 +54,6 @@ public class Drivetrain extends Subsystem {
 	 */
 	private RobotDrive robotDrive; // Allows for us to drive like a tank
 	public static final ADXRS453Gyro gyro = new ADXRS453Gyro();
-	public static final BuiltInAccelerometer accel = new BuiltInAccelerometer();
 	public Encoder leftEncoder;
 	public Encoder rightEncoder;
 	

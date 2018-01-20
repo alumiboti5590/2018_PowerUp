@@ -152,6 +152,10 @@ public class ADXRS453Gyro extends Subsystem{
 	public double getRate() {
 		return currentRate;
 	}
+	
+	public double getLastRate() {
+		return lastRate;
+	}
 
 	public int getStatus() {
 		return status;

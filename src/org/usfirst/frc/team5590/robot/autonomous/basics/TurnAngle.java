@@ -1,9 +1,8 @@
-package org.usfirst.frc.team5590.robot.autonomous;
+package org.usfirst.frc.team5590.robot.autonomous.basics;
 
 import java.util.logging.Logger;
 
 import org.usfirst.frc.team5590.robot.Robot;
-import org.usfirst.frc.team5590.robot.autonomous.DistanceDrive.State;
 import org.usfirst.frc.team5590.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -83,7 +82,7 @@ public class TurnAngle extends Command {
 		case STOP:
 			if (Robot.drivetrain.stop()) {
 				this.state = State.CLEANING;
-				logger.info("Stopping at Angle " + Robot.drivetrain.gyro.getAngle());
+				logger.info("Stopping at Angle " + Drivetrain.gyro.getAngle());
 			}
 			break;
 			
@@ -95,8 +94,6 @@ public class TurnAngle extends Command {
 			Robot.drivetrain.stop();
 			this.state = State.COMPLETE;
 		}
-		
-		logger.info("Angle: " + Drivetrain.gyro.getAngle());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
