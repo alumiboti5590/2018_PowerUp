@@ -77,9 +77,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		// Get the field configuration
-		if (gameData == null || gameData.length() != 3) {
-			gameData = DriverStation.getInstance().getGameSpecificMessage();
-		}
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
 		// Preferences from driver station
 		preferences = Preferences.getInstance();
