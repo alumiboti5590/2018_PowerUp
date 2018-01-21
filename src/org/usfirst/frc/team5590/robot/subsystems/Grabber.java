@@ -12,7 +12,7 @@ public class Grabber extends Subsystem{
 	
 	private static final int SOLENOID_IN = 2;
 	private static final int SOLENOID_OUT = 3;
-	private static final int TALONPORT= 4;
+	private static final int TALONPORT= 5;
 	
 	private static final double SPINNER_SPEED = .7;
 	
@@ -21,7 +21,7 @@ public class Grabber extends Subsystem{
 
 	public Grabber() {
 		grabberSolenoid = new DoubleSolenoid(SOLENOID_IN,SOLENOID_OUT);
-		spinSpeed = new TalonSRX(TALONPORT);
+		//spinSpeed = new TalonSRX(TALONPORT);
 	}
 	
 	public void initDefaultCommand(){
