@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import org.usfirst.frc.team5590.robot.subsystems.Drivetrain;
+import org.usfirst.frc.team5590.robot.subsystems.Grabber;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,6 +24,7 @@ public class Robot extends IterativeRobot {
 	 */
 	public static final Drivetrain drivetrain = new Drivetrain();
 	
+	public static final Grabber grabber = new Grabber();
 	/**
 	 * Initialize the Input/Output controllers below
 	 */
