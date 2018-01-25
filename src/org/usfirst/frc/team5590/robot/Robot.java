@@ -1,13 +1,14 @@
 
 package org.usfirst.frc.team5590.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-
+import org.usfirst.frc.team5590.robot.autonomous.AutoStrategy;
+import org.usfirst.frc.team5590.robot.autonomous.RightApproachScale;
 import org.usfirst.frc.team5590.robot.subsystems.Drivetrain;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,13 +24,15 @@ public class Robot extends IterativeRobot {
 	 */
 	public static final Drivetrain drivetrain = new Drivetrain();
 	
+	public static Preferences preferences;
+	AutoStrategy autonomousCommand;
+	
 	/**
 	 * Initialize the Input/Output controllers below
 	 */
 	public static OI oi;
-
-	Command autonomousCommand;
-	SendableChooser<Command> chooser = new SendableChooser<>();
+	
+	String gameData;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -38,9 +41,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
-		// chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		// SmartDashboard.putData("Auto mode", chooser);
 	}
 
 	/**
@@ -50,11 +50,16 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
+		if (gameData == null || gameData.length() != 3) {
+			gameData = DriverStation.getInstance().getGameSpecificMessage();
+		}
 	}
 
 	@Override
 	public void disabledPeriodic() {
+		if (gameData == null || gameData.length() != 3) {
+			gameData = DriverStation.getInstance().getGameSpecificMessage();
+		}
 		Scheduler.getInstance().run();
 	}
 
@@ -71,14 +76,29 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = chooser.getSelected();
-
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
+		// Get the field configuration
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		
+		// Preferences from driver station
+		preferences = Preferences.getInstance();
+		
+		boolean driveNearSide = preferences.getBoolean("CrossBackwallSwitchSide", false);
+		double fastSpeed = preferences.getDouble("DriveFastSpeed", .8);
+		double slowSpeed = preferences.getDouble("DriveSlowSpeed", .4);
+		char scaleSide = gameData.charAt(1);
+		char switchSide = gameData.charAt(0);
+		String autonomousString = preferences.getString("Autonomous", "RightApproachScale");
+		
+		switch (autonomousString) {
+		default:
+			autonomousCommand = new RightApproachScale();
+			break;
+		}
+		
+		
+		// Schedule and run command
+		autonomousCommand.setValues(driveNearSide, scaleSide, switchSide, fastSpeed, slowSpeed);
+		autonomousCommand.scheduleCommand();
 
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
@@ -116,6 +136,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		LiveWindow.run();
+		
 	}
 }

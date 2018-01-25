@@ -7,11 +7,17 @@ package org.usfirst.frc.team5590.robot;
  * floating around.
  */
 public class RobotMap {
-	/*
-	 * Drivetrain Mappings
+	/**
+	 * DriveTrain
 	 */
-	public static final int DRIVETRAIN_LEFT_CONTROLLER_PWM = 1;
-	public static final int DRIVETRAIN_RIGHT_CONTROLLER_PWM = 0;
-	public static final int DRIVETRAIN_GYROSCOPE_ANALOG_PORT = 1;
+	public static final int DT_LEFT_CONTROLLER_PWM = 1;
+	public static final int DT_RIGHT_CONTROLLER_PWM = 0;
 
+	public static final int GYROSCOPE_ANALOG_PORT = 0;
+	
+	public static final int DT_LEFT_ENCODER_SIGNAL_INPUT = 0;
+	public static final int DT_LEFT_ENCODER_SIGNAL_OUTPUT = 1;
+	
+	public static final int DT_RIGHT_ENCODER_SIGNAL_INPUT = 2;
+	public static final int DT_RIGHT_ENCODER_SIGNAL_OUTPUT = 3;
 }

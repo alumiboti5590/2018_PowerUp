@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5590.robot.commands;
 
+import java.util.logging.Logger;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.usfirst.frc.team5590.robot.Robot;
@@ -9,6 +11,8 @@ import org.usfirst.frc.team5590.robot.Robot;
  * the Drivetrain Subsystem
  */
 public class JoystickDrive extends Command {
+	
+	private final static Logger logger = Logger.getLogger(JoystickDrive.class.getName());
 
 	/*
 	 * Initialize the command in Java. This command doesn't
@@ -26,7 +30,9 @@ public class JoystickDrive extends Command {
 	 *  Start the match and make sure we are stopped.
 	 */
 	protected void initialize() {
+		logger.info("Initializing Joystick Drive");
 		Robot.drivetrain.stop();
+		Robot.drivetrain.recalibrate();
 	}
 
 	/*
@@ -54,7 +60,9 @@ public class JoystickDrive extends Command {
 	 *  Stop the robot if something happens
 	 */
 	protected void end() {
+		logger.info("Joystick Drive Ended");
 		Robot.drivetrain.stop();
+		Robot.drivetrain.recalibrate();
 	}
 
 	/*
@@ -64,6 +72,8 @@ public class JoystickDrive extends Command {
 	 *  Stop the robot if something happens
 	 */
 	protected void interrupted() {
+		logger.info("Joystick Drive Interrupted");
 		Robot.drivetrain.stop();
+		Robot.drivetrain.recalibrate();
 	}
 }

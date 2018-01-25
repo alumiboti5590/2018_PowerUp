@@ -3,7 +3,6 @@ package org.usfirst.frc.team5590.robot.controllers;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.buttons.Trigger;
 
 /**
  * Xbox controller with all of the buttons mapped out.
