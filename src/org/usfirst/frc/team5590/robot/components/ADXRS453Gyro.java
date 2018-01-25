@@ -36,7 +36,6 @@ public class ADXRS453Gyro extends Subsystem{
 
 	//angle integration
 	public volatile double currentRate;
-	private volatile double lastRate;
 	public volatile double deltaTime;
 	public volatile double currentTime;
 	private volatile double lastTime;
@@ -82,7 +81,6 @@ public class ADXRS453Gyro extends Subsystem{
 
 		lastTime = 0;
 		currentTime = 0;
-		lastRate = 0;
 		deltaTime = 0;
 		accumulatedRate = 0;
 
@@ -151,10 +149,6 @@ public class ADXRS453Gyro extends Subsystem{
 
 	public double getRate() {
 		return currentRate;
-	}
-	
-	public double getLastRate() {
-		return lastRate;
 	}
 
 	public int getStatus() {
@@ -339,7 +333,6 @@ public class ADXRS453Gyro extends Subsystem{
 			}
 		}
 
-		lastRate = currentRate;
 		lastTime = currentTime;
 
 		//Get all other Gyro data here
