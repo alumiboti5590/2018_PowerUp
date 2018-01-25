@@ -12,7 +12,6 @@ bin
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 *.zip
@@ -22,16 +21,9 @@ bin
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-<<<<<<< HEAD
-_build
-
-venv
-
 __pycache__
-=======
 # docs
 venv
 __pycache__
 _build
 *.pyc
->>>>>>> e0cb0761faef976e47537039341202c990ccfa14
