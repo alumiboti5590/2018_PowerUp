@@ -1,23 +1,28 @@
 package org.usfirst.frc.team5590.robot.commands;
 
+import java.util.logging.Logger;
+
 import org.usfirst.frc.team5590.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * Grabber opening via pneumatics 
  */
+
 public class OpenGrabber extends Command {
+	
+	private final static Logger logger = Logger.getLogger(OpenGrabber.class.getName());
 
 	public OpenGrabber() {
 		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
+		
 		requires(Robot.grabber);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		System.out.println("Starting OpenGrabber");
+		logger.info("Starting OpenGrabber");
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -32,11 +37,13 @@ public class OpenGrabber extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		System.out.println("Ending OpenGrabber");
+		logger.info("Ending OpenGrabber");
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
+		
+		logger.info("Open Grabber Interrupted");
 	}
 }

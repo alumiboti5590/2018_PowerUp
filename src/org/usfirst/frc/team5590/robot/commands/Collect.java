@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5590.robot.commands;
 
+import java.util.logging.Logger;
+
 import org.usfirst.frc.team5590.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -7,22 +9,22 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class SuckIn extends Command {
+public class Collect extends Command {
+	
+	private final static Logger logger = Logger.getLogger(Collect.class.getName());
 
-	public SuckIn() {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-		requires(Robot.grabber);
+	public Collect() {
+		requires(Robot.drivetrain);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		System.out.println("Starting SuckIn");
+		logger.info("Starting Belt Stop");
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.grabber.spinnerIn();
+		Robot.beltdrive.beltStop();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -37,6 +39,6 @@ public class SuckIn extends Command {
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		Robot.grabber.spinnerStop();
+		Robot.beltdrive.beltStop();
 	}
 }

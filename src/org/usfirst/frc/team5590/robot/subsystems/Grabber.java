@@ -1,42 +1,39 @@
 package org.usfirst.frc.team5590.robot.subsystems;
 
+import org.usfirst.frc.team5590.robot.RobotMap;
+import org.usfirst.frc.team5590.robot.commands.CloseGrabber;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
-//**MUST IMPORT FOR TALONPORT**
 
 /*
  * 
  */
 public class Grabber extends Subsystem {
 
-	private static final int SOLENOID_IN = 2;
-	private static final int SOLENOID_OUT = 3;
-	private static final int TALONPORT = 5;
-
-	private static final double SPINNER_SPEED = .7;
 
 	DoubleSolenoid grabberSolenoid;
-	SpeedController spinSpeed;
 
 	public Grabber() {
-		grabberSolenoid = new DoubleSolenoid(SOLENOID_IN, SOLENOID_OUT);
-		// spinSpeed = new TalonSRX(TALONPORT);
+		grabberSolenoid = new DoubleSolenoid(
+			RobotMap.GRABBER_SOLENOID_IN, 
+			RobotMap.GRABBER_SOLENOID_OUT
+		);
 	}
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
-		clawsOpen();
+		setDefaultCommand(new CloseGrabber());
 	}
 
-	// Opens the doors that hold in the gear
+	// Opens the claw that houses the Power Cube
 	public void clawsOpen() {
 		grabberSolenoid.set(DoubleSolenoid.Value.kForward);
 
 	}
 
-	// Closes the doors that hold in the gear
+	// Closes the claw that houses the Power Cube
 	public void clawsClose() {
 		grabberSolenoid.set(DoubleSolenoid.Value.kReverse);
 	}
@@ -44,38 +41,6 @@ public class Grabber extends Subsystem {
 	// Deactivates the subsystem
 	public void grabberOff() {
 		grabberSolenoid.set(DoubleSolenoid.Value.kOff);
-		spinSpeed.stopMotor();
-	}
-
-	public void spinnerIn() {
-
-		double validSpeed;
-
-		validSpeed = ensureRange(-SPINNER_SPEED, -1, 1);
-		spinSpeed.set(validSpeed);
-
-	}
-
-	public void spinnerOut() {
-
-		double validSpeed;
-
-		validSpeed = ensureRange(SPINNER_SPEED, -1, 1);
-		spinSpeed.set(validSpeed);
-
-	}
-
-	public void spinnerStop() {
-
-		double validSpeed;
-
-		validSpeed = ensureRange(0, -1, 1);
-		spinSpeed.set(validSpeed);
-
-	}
-
-	private double ensureRange(double value, double min, double max) {
-		return Math.min(Math.max(value, min), max);
 	}
 
 }

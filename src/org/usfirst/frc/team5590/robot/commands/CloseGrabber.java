@@ -1,23 +1,27 @@
 package org.usfirst.frc.team5590.robot.commands;
 
+import java.util.logging.Logger;
+
 import org.usfirst.frc.team5590.robot.Robot;
+import org.usfirst.frc.team5590.robot.autonomous.basics.TurnAngle;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * Closes the grabber via pneumatics 
  */
 public class CloseGrabber extends Command {
 
+	private final static Logger logger = Logger.getLogger(CloseGrabber.class.getName());
+	
 	public CloseGrabber() {
 		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
 		requires(Robot.grabber);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		System.out.println("Starting CloseGrabber");
+		logger.info("Starting CloseGrabber");
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -32,11 +36,12 @@ public class CloseGrabber extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		System.out.println("Ending CloseGrabber");
+		logger.info("Ending CloseGrabber");
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
+		logger.info("Close Grabber Interrupted");
 	}
 }
