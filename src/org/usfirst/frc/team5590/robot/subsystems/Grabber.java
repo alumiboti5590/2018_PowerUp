@@ -12,9 +12,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Grabber extends Subsystem {
 
 
+	// Double solenoid can open at both ends
+	// allowing opening and closing
 	DoubleSolenoid grabberSolenoid;
 
 	public Grabber() {
+		
+		// Create the solenoid on the right ports
 		grabberSolenoid = new DoubleSolenoid(
 			RobotMap.GRABBER_SOLENOID_IN, 
 			RobotMap.GRABBER_SOLENOID_OUT

@@ -1,6 +1,5 @@
 package org.usfirst.frc.team5590.robot;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -28,6 +27,8 @@ public class RobotMap {
 	
 	public static final int TALON_SRX_LEFT_MOTOR = 2;
 	public static final int TALON_SRX_RIGHT_MOTOR = 3;
+	
+	public static final int HALT_MOTOR_SWITCH = 3;
 	
 
 	

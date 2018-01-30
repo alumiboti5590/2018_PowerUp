@@ -14,26 +14,34 @@ public class Collect extends Command {
 	private final static Logger logger = Logger.getLogger(Collect.class.getName());
 
 	public Collect() {
-		requires(Robot.drivetrain);
+		requires(Robot.beltdrive);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		logger.info("Starting Belt Stop");
+		Robot.beltdrive.beltStop();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.beltdrive.beltStop();
+		// fill me in
+		if(!Robot.beltdrive.switchTriggered()){
+			Robot.beltdrive.intake();
+		} else {
+			Robot.beltdrive.beltStop();
+		}
+		// fill me in
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return true;
+		return false;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
+		Robot.beltdrive.beltStop();
 	}
 
 	// Called when another command which requires one or more of the same

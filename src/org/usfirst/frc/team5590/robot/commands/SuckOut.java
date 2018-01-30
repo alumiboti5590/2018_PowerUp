@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class SuckOut extends Command {
 	
-	private final static Logger logger = Logger.getLogger(SuckIn.class.getName());
+	private final static Logger logger = Logger.getLogger(SuckOut.class.getName());
 
 	public SuckOut() {
 		requires(Robot.beltdrive);
