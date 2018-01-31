@@ -3,7 +3,9 @@ package org.usfirst.frc.team5590.robot;
 
 import org.usfirst.frc.team5590.robot.autonomous.AutoStrategy;
 import org.usfirst.frc.team5590.robot.autonomous.RightApproachScale;
+import org.usfirst.frc.team5590.robot.subsystems.BeltDrive;
 import org.usfirst.frc.team5590.robot.subsystems.Drivetrain;
+import org.usfirst.frc.team5590.robot.subsystems.Grabber;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -23,6 +25,8 @@ public class Robot extends IterativeRobot {
 	 * Initialize the subsystems below
 	 */
 	public static final Drivetrain drivetrain = new Drivetrain();
+	public static final Grabber grabber = new Grabber();
+	public static final BeltDrive beltdrive = new BeltDrive();
 	
 	public static Preferences preferences;
 	AutoStrategy autonomousCommand;

@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5590.robot;
 
+import org.usfirst.frc.team5590.robot.commands.OpenGrabber;
+import org.usfirst.frc.team5590.robot.commands.SuckOut;
 import org.usfirst.frc.team5590.robot.controllers.LogitechX3;
 import org.usfirst.frc.team5590.robot.controllers.XboxController;
 
@@ -36,6 +38,9 @@ public class OI {
 	public OI() {
 		xboxController = new XboxController(XBOX_PORT);
 		logitechController = new LogitechX3(LOGITECH_PORT);
-	
+		
+
+		logitechController.button1.whileHeld(new SuckOut());
+		logitechController.button7.whileHeld(new OpenGrabber());
 	}
 }
