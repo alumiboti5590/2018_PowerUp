@@ -8,13 +8,22 @@ package org.usfirst.frc.team5590.robot;
  */
 public class RobotMap {
 	/**
-	 * DriveTrain
+	 * PWM Ports
 	 */
+	// Drivetrain Speed Controllers
 	public static final int DT_LEFT_CONTROLLER_PWM = 1;
 	public static final int DT_RIGHT_CONTROLLER_PWM = 0;
 
+	/**
+	 * SPI Ports
+	 */
+	// Gyroscope
 	public static final int GYROSCOPE_ANALOG_PORT = 0;
 	
+	/**
+	 * DIO Ports
+	 */
+	// Drivetrain
 	public static final int DT_LEFT_ENCODER_SIGNAL_INPUT = 0;
 	public static final int DT_LEFT_ENCODER_SIGNAL_OUTPUT = 1;
 	
