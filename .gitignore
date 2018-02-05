@@ -3,6 +3,7 @@
 bin
 build
 dist
+javadoc
 
 # Log file
 *.log

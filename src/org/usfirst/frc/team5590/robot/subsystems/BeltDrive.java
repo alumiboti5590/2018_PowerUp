@@ -15,25 +15,25 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * Controls the sucking in and sucking out of the cubes via a belt drive
  */
 public class BeltDrive extends Subsystem {
-	
+
 	public static AnalogInput safetySwitch;
 	TalonSRX leftMotor = new TalonSRX(RobotMap.TALON_SRX_LEFT_MOTOR);
 	TalonSRX rightMotor = new TalonSRX(RobotMap.TALON_SRX_RIGHT_MOTOR);
 
-	public BeltDrive(){
+	public BeltDrive() {
 		safetySwitch = new AnalogInput(RobotMap.HALT_MOTOR_SWITCH);
 	}
-	
+
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
-		
+
 		setDefaultCommand(new Collect());
 	}
-	
+
 	public void intake() {
 		setBeltSpeed(.6);
 	}
@@ -47,19 +47,17 @@ public class BeltDrive extends Subsystem {
 	public void beltStop() {
 		setBeltSpeed(0);
 	}
-	
+
 	private void setBeltSpeed(double speed) {
-		leftMotor.set(ControlMode.PercentOutput,speed);
-		rightMotor.set(ControlMode.PercentOutput,-speed);
+		leftMotor.set(ControlMode.PercentOutput, speed);
+		rightMotor.set(ControlMode.PercentOutput, -speed);
 	}
-	
-	
-	public boolean switchTriggered(){
-		if(safetySwitch.getVoltage() >= 3){
+
+	public boolean switchTriggered() {
+		if (safetySwitch.getVoltage() >= 3) {
 			return true;
 		} else {
-		return false;
+			return false;
+		}
 	}
-	
-	
 }
