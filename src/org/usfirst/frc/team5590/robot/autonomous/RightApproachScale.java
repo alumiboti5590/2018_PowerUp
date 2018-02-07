@@ -49,9 +49,8 @@ public class RightApproachScale extends AutoStrategy {
     private void leftSideScaleThruSwitchScaleDrive() {
     		logger.info("*** DRIVING TO LEFT SCALE BETWEEN SCALE & SWITCH ***");
     		addSequential(new PolarDrive(0, 222, fastSpeed));
-    		addSequential(new PolarDrive(-90, 240, fastSpeed));
-    		addSequential(new PolarDrive(90, 85, slowSpeed));
-    		addSequential(new PolarDrive(90, 0, slowSpeed));
+    		addSequential(new PolarDrive(-90, 215, fastSpeed));
+    		addSequential(new PolarDrive(92, 30, slowSpeed));
     }
     
 }

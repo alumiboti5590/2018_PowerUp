@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class BeltDrive extends Subsystem {
 
 	public static AnalogInput safetySwitch;
-	TalonSRX leftMotor = new TalonSRX(RobotMap.TALON_SRX_LEFT_MOTOR);
-	TalonSRX rightMotor = new TalonSRX(RobotMap.TALON_SRX_RIGHT_MOTOR);
+	TalonSRX leftMotor = new TalonSRX(RobotMap.BELTDRIVE_LEFT_MOTOR);
+	TalonSRX rightMotor = new TalonSRX(RobotMap.BELTDRIVE_RIGHT_MOTOR);
 
 	public BeltDrive() {
 		safetySwitch = new AnalogInput(RobotMap.HALT_MOTOR_SWITCH);

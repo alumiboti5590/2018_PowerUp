@@ -7,6 +7,7 @@ import org.usfirst.frc.team5590.robot.subsystems.BeltDrive;
 import org.usfirst.frc.team5590.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team5590.robot.subsystems.Grabber;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
@@ -30,6 +31,7 @@ public class Robot extends IterativeRobot {
 	
 	public static Preferences preferences;
 	AutoStrategy autonomousCommand;
+	public static DriverStation ds = DriverStation.getInstance();
 	
 	/**
 	 * Initialize the Input/Output controllers below
@@ -44,6 +46,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		CameraServer.getInstance().startAutomaticCapture();
 		oi = new OI();
 	}
 
@@ -55,14 +58,14 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledInit() {
 		if (gameData == null || gameData.length() != 3) {
-			gameData = DriverStation.getInstance().getGameSpecificMessage();
+			gameData = ds.getGameSpecificMessage();
 		}
 	}
 
 	@Override
 	public void disabledPeriodic() {
 		if (gameData == null || gameData.length() != 3) {
-			gameData = DriverStation.getInstance().getGameSpecificMessage();
+			gameData = ds.getGameSpecificMessage();
 		}
 		Scheduler.getInstance().run();
 	}
@@ -81,7 +84,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		// Get the field configuration
-		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		gameData = ds.getGameSpecificMessage();
 		
 		// Preferences from driver station
 		preferences = Preferences.getInstance();

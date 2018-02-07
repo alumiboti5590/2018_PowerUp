@@ -16,7 +16,7 @@ public class DistanceDrive extends Command {
 	private final static Logger logger = Logger.getLogger(DistanceDrive.class.getName());
 
 	protected enum State {
-		INITIALIZING, PERFORMING, STOP, CLEANING, COMPLETE
+		INITIALIZING, PERFORMING, STOP, STRAIGHTEN, CLEANING, COMPLETE
 	}
 
 	private State state = State.INITIALIZING;
@@ -27,6 +27,7 @@ public class DistanceDrive extends Command {
 	// Sampling to get exact
 
 	private static final int DESIRED_SAMPLES = 40;
+	private static final int DESIRED_TURN_SAMPLES = 5;
 	private int validSamples = 0;
 	private double tolerance = 2;
 
@@ -56,6 +57,9 @@ public class DistanceDrive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+		
+		logger.info("state: " + this.state);
+		
 		switch (this.state) {
 
 		case INITIALIZING:
@@ -76,19 +80,33 @@ public class DistanceDrive extends Command {
 
 			// If we have hit our correct sample rate
 			if (validSamples >= DESIRED_SAMPLES)
-				this.state = State.STOP;
+				this.state = State.STRAIGHTEN;
 			break;
 			
 		case STOP:
 			if (Robot.drivetrain.stop()) {
 				this.state = State.CLEANING;
+				validSamples = 0;
 			}
 			break;
+		
+		case STRAIGHTEN:
+			if (Robot.drivetrain.turn(0, .5, 1)) {
+				++validSamples;
+			} else {
+				validSamples = 0;
+			}
 
+			// If we have hit our correct sample rate
+			if (validSamples >= DESIRED_TURN_SAMPLES)
+				this.state = State.CLEANING;
+			break;
+				
 		case CLEANING:
 			if (Robot.drivetrain.recalibrate())
 				this.state = State.COMPLETE;
 			break;
+			
 
 		default:
 			Robot.drivetrain.stop();

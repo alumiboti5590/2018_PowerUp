@@ -23,7 +23,7 @@ public class TurnAngle extends Command {
 	}
 	private State state = State.INITIALIZING;
 
-	private double speed = .5;
+	private double speed = .6;
 	private double degrees = 0;
 	
 	// Sampling to get exact
