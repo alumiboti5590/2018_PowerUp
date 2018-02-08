@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ManualLiftUp extends Command {
-	private final static Logger logger = Logger.getLogger(SuckOut.class.getName());
+	private final static Logger logger = Logger.getLogger(ManualLiftUp.class.getName());
 
 	public ManualLiftUp() {
 		// Use requires() here to declare subsystem dependencies
