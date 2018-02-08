@@ -34,12 +34,13 @@ public class RobotMap {
 	public static final int GRABBER_SOLENOID_IN = 2;
 	public static final int GRABBER_SOLENOID_OUT = 3;
 	
-	public static final int BELTDRIVE_LEFT_MOTOR = 1;
-	public static final int BELTDRIVE_RIGHT_MOTOR = 3;
+	public static final int BELTDRIVE_LEFT_MOTOR = 41;
+	public static final int BELTDRIVE_RIGHT_MOTOR = 40;
 	
 	public static final int HALT_MOTOR_SWITCH = 3;
 	
-
+	public static final int Talon_SRX_Elevator = 5;
+	public static final int Talon_SRX_Elevator_Assist = 3;		
 	
 }
 

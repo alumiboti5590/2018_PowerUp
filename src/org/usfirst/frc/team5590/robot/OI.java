@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5590.robot;
 
+import org.usfirst.frc.team5590.robot.commands.ManualLiftDown;
+import org.usfirst.frc.team5590.robot.commands.ManualLiftUp;
 import org.usfirst.frc.team5590.robot.commands.OpenGrabber;
 import org.usfirst.frc.team5590.robot.commands.SuckOut;
 import org.usfirst.frc.team5590.robot.controllers.LogitechX3;
@@ -40,7 +42,9 @@ public class OI {
 		logitechController = new LogitechX3(LOGITECH_PORT);
 		
 
-		logitechController.button1.whileHeld(new SuckOut());
+		logitechController.button8.whileHeld(new SuckOut());
 		logitechController.button7.whileHeld(new OpenGrabber());
+		logitechController.button9.whileHeld(new ManualLiftUp());
+		logitechController.button5.whileHeld(new ManualLiftDown());
 	}
 }
