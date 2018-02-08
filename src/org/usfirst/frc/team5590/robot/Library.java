@@ -7,5 +7,8 @@ public class Library {
 		for (double d : data) sum += d;
 		return 1.0d * sum / data.length;
 	}
+	public static boolean withinTolerance(double value, double goal, double tolerance) {
+		return Math.abs(goal - value) <= tolerance;
+	}
 
 }

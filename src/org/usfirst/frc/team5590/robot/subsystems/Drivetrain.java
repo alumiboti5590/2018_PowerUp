@@ -126,7 +126,7 @@ public class Drivetrain extends Subsystem {
 		// Determine if encoders have changed
 		double current = getEncoderAverage();
 		
-		if (withinTolerance(current, prevDistance, .5)) {
+		if (Library.withinTolerance(current, prevDistance, .5)) {
 			return true;
 		}
 		
@@ -174,7 +174,7 @@ public class Drivetrain extends Subsystem {
 	public boolean turn(double degrees, double speed, double angleTolerance) {
 		double angle = gyro.getAngle();
 		
-		if (withinTolerance(angle, degrees, angleTolerance)) {
+		if (Library.withinTolerance(angle, degrees, angleTolerance)) {
 			this.stop();
 			return true;
 			
@@ -194,7 +194,7 @@ public class Drivetrain extends Subsystem {
 		
 		speed = scaleDownSpeed(speed, distance, desiredDistance);
 		
-		if (withinTolerance(distance, desiredDistance, tolerance)) {
+		if (Library.withinTolerance(distance, desiredDistance, tolerance)) {
 			this.stop();
 			return true;
 			
@@ -234,9 +234,7 @@ public class Drivetrain extends Subsystem {
 		return true;
 	}
 	
-	private boolean withinTolerance(double value, double goal, double tolerance) {
-		return Math.abs(goal - value) <= tolerance;
-	}
+	
 	
 	public double getEncoderAverage() {
 		return Library.average(new double[] {leftEncoder.getDistance(), rightEncoder.getDistance()});

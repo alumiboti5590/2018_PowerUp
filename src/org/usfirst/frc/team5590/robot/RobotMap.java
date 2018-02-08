@@ -42,5 +42,8 @@ public class RobotMap {
 	public static final int Talon_SRX_Elevator = 5;
 	public static final int Talon_SRX_Elevator_Assist = 3;		
 	
+	public static final int ELEVATOR_ENCODER_SIGNAL_INPUT = 4;
+	public static final int ELEVATOR_ENCODER_SIGNAL_OUTPUT = 5;
+	
 }
 
