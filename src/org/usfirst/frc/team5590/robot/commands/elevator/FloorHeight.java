@@ -20,10 +20,10 @@ public class FloorHeight extends Command {
 	private double speed = .7;
 	private double distance = 0;
 
-	//Sampling?
-	private static final int DESIRED_SAMPLES = 40;
+	// Sampling
+	private static final int DESIRED_SAMPLES = 7;
 	private int validSamples = 0;
-	private double tolerance = 7;
+	private double tolerance = 2;
 
 	public FloorHeight(double distance) {
 		this.distance = distance;
@@ -48,38 +48,51 @@ public class FloorHeight extends Command {
 		logger.info("Initializing floor height comand.");
 		Robot.elevator.StopLift();
 	}
-	
+
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
     	switch (this.state) {
     	
     	case STARTING:
-    		if (Robot.elevator.()) 
+    		if (Robot.elevator.) 
     		this.state = State.PERFORMING;
     			
-    	case PERFORMING:
+    		break;
     		
+    	case PERFORMING:
+    		double distance = validSamples > 0 ? this.speed / 3 : this.speed;
+			if (Robot.elevator.LiftHeight(distance, speed, tolerance)){
+				++validSamples;
+			} else {
+				validSamples = 0;
+			}
+		if (validSamples >= DESIRED_SAMPLES) this.state = State.STOP;
+    		break;
     		
     	case STOP:
+    		if (Robot.elevator.StopLift()) {
+				this.state = State.COMPLETE;
+				validSamples = 0;
+			}
     		
+    		break; 
     		
-    	case COMPLETE:
-    		
-    		
+    	default:
+			Robot.elevator.StopLift();
+			this.state = State.COMPLETE;
+    	}	
     	}
-    	
-    	
-    }
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return false;
+		return this.state == State.COMPLETE;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
+		logger.info("Floor Height Command Done.");
+		
 	}
-
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {

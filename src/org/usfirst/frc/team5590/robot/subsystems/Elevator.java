@@ -57,10 +57,10 @@ public class Elevator extends Subsystem {
 		rightMotor.set(ControlMode.PercentOutput, -speed);
 	}
 
-	public boolean LiftHeight(double desired, double speed, double tolerence) {
+	public boolean LiftHeight(double desired, double speed, double tolerance) {
 		double distance = encoder.getDistance();
 	
-		if (Library.withinTolerance(distance, desired, tolerence)) {
+		if (Library.withinTolerance(distance, desired, tolerance)) {
 			this.StopLift();
 			return true; 
 		} else if (distance > desired) {
