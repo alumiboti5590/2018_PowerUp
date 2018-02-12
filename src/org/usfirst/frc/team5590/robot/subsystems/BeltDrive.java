@@ -1,6 +1,5 @@
 package org.usfirst.frc.team5590.robot.subsystems;
 
-import org.usfirst.frc.team5590.robot.Robot;
 import org.usfirst.frc.team5590.robot.RobotMap;
 import org.usfirst.frc.team5590.robot.commands.Collect;
 
@@ -8,7 +7,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**

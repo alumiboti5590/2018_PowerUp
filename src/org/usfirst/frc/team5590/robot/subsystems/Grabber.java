@@ -19,10 +19,10 @@ public class Grabber extends Subsystem {
 	public Grabber() {
 		
 		// Create the solenoid on the right ports
-		//grabberSolenoid = new DoubleSolenoid(
-		//	RobotMap.GRABBER_SOLENOID_IN, 
-		//	RobotMap.GRABBER_SOLENOID_OUT
-		//);
+		grabberSolenoid = new DoubleSolenoid(
+			RobotMap.GRABBER_SOLENOID_IN, 
+			RobotMap.GRABBER_SOLENOID_OUT
+		);
 	}
 
 	public void initDefaultCommand() {
@@ -33,18 +33,18 @@ public class Grabber extends Subsystem {
 
 	// Opens the claw that houses the Power Cube
 	public void clawsOpen() {
-		//grabberSolenoid.set(DoubleSolenoid.Value.kForward);
+		grabberSolenoid.set(DoubleSolenoid.Value.kForward);
 
 	}
 
 	// Closes the claw that houses the Power Cube
 	public void clawsClose() {
-		//grabberSolenoid.set(DoubleSolenoid.Value.kReverse);
+		grabberSolenoid.set(DoubleSolenoid.Value.kReverse);
 	}
 
 	// Deactivates the subsystem
 	public void grabberOff() {
-		//grabberSolenoid.set(DoubleSolenoid.Value.kOff);
+		grabberSolenoid.set(DoubleSolenoid.Value.kOff);
 	}
 
 }

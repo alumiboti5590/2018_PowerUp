@@ -2,7 +2,7 @@ package org.usfirst.frc.team5590.robot.subsystems;
 
 import org.usfirst.frc.team5590.robot.Library;
 import org.usfirst.frc.team5590.robot.RobotMap;
-import org.usfirst.frc.team5590.robot.commands.StopElevator;
+import org.usfirst.frc.team5590.robot.commands.elevator.StopElevator;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -18,8 +18,8 @@ public class Elevator extends Subsystem {
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
-	TalonSRX leftMotor = new TalonSRX(RobotMap.Talon_SRX_Elevator);
-	TalonSRX rightMotor = new TalonSRX(RobotMap.Talon_SRX_Elevator_Assist);
+	TalonSRX leftMotor = new TalonSRX(RobotMap.ELEVATOR_TALON_SRX);
+	TalonSRX rightMotor = new TalonSRX(RobotMap.ELEVATOR_TALON_SRX_ASSIST);
 	private double speed = .7;
 	public Encoder encoder;
 	private static final boolean INVERT_ENCODER = false;
@@ -40,12 +40,12 @@ public class Elevator extends Subsystem {
 	}
 
 	public void LiftUp() {
-		setElevatorSpeed(.7);
+		setElevatorSpeed(speed);
 
 	}
 
 	public void DropDown() {
-		setElevatorSpeed(-.7);
+		setElevatorSpeed(-speed);
 	}
 
 	public void StopLift() {
