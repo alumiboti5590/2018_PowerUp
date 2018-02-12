@@ -54,6 +54,10 @@ public class Climber extends Subsystem {
 		this.desiredHeight = height;
 	}
 	
+	public void saveCurrentHeightAsDesired() {
+		this.desiredHeight = encoder.getDistance();
+	}
+	
 	public void setSpeed(double speed) {
 		this.motor.set(ControlMode.PercentOutput, speed);
 	}

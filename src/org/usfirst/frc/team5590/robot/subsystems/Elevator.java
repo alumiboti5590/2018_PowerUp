@@ -2,7 +2,7 @@ package org.usfirst.frc.team5590.robot.subsystems;
 
 import org.usfirst.frc.team5590.robot.Library;
 import org.usfirst.frc.team5590.robot.RobotMap;
-import org.usfirst.frc.team5590.robot.commands.elevator.StopElevator;
+import org.usfirst.frc.team5590.robot.commands.elevator.LiftToHeight;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -18,57 +18,85 @@ public class Elevator extends Subsystem {
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
-	TalonSRX leftMotor = new TalonSRX(RobotMap.ELEVATOR_TALON_SRX);
-	TalonSRX rightMotor = new TalonSRX(RobotMap.ELEVATOR_TALON_SRX_ASSIST);
-	private double speed = .7;
+	TalonSRX mainMotor = new TalonSRX(RobotMap.ELEVATOR_TALON_SRX);
+	TalonSRX assistMotor = new TalonSRX(RobotMap.ELEVATOR_TALON_SRX_ASSIST);
+	private double stabilizeSpeed = .1;
+	
 	public Encoder encoder;
 	private static final boolean INVERT_ENCODER = false;
-	private static final double LIFT_DISTANCE_PER_PLUSE = .1;
+	private static final boolean INVERT_MAIN_MOTOR = false;
+	private static final boolean INVERT_ASSIST_MOTOR = false;
 	
+	private double desiredHeight = 0;
+	
+	// 20 pulses per rev
+	// .203 pitch
+	
+	private static final double CLIMB_DISTANCE_PER_PLUSE = .01015;
+
 	public Elevator() {
 		encoder = new Encoder(RobotMap.ELEVATOR_ENCODER_SIGNAL_INPUT, RobotMap.ELEVATOR_ENCODER_SIGNAL_OUTPUT,
 				INVERT_ENCODER, EncodingType.k2X);
-		encoder.setDistancePerPulse(LIFT_DISTANCE_PER_PLUSE);
+		encoder.setDistancePerPulse(CLIMB_DISTANCE_PER_PLUSE);
+		mainMotor.setInverted(INVERT_MAIN_MOTOR);
+		assistMotor.setInverted(INVERT_ASSIST_MOTOR);
 	}
-	
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
-		// setDefaultCommand(new MySpecialCommand());
-		setDefaultCommand(new StopElevator());
-
+		setDefaultCommand(new LiftToHeight(0, .1, 1));
 	}
-
-	public void LiftUp() {
-		setElevatorSpeed(speed);
-
-	}
-
-	public void DropDown() {
-		setElevatorSpeed(-speed);
-	}
-
-	public void StopLift() {
-		setElevatorSpeed(0);
-	}
-
-	private void setElevatorSpeed(double speed) {
-		leftMotor.set(ControlMode.PercentOutput, speed);
-		rightMotor.set(ControlMode.PercentOutput, -speed);
-	}
-
-	public boolean LiftHeight(double desired, double speed, double tolerance) {
-		double distance = encoder.getDistance();
 	
-		if (Library.withinTolerance(distance, desired, tolerance)) {
-			this.StopLift();
-			return true; 
-		} else if (distance > desired) {
-			this.setElevatorSpeed(speed);
-		} else {
-			this.setElevatorSpeed(speed);
-		}
-		return false; 
+	/**
+	 * Set the height you want to go to. This is the
+	 * only command that needs called for moving the 
+	 * climber
+	 * @return
+	 */
+	public void setDesiredHeight(double height) {
+		this.desiredHeight = height;
 	}
+	
+	public void saveCurrentHeightAsDesired() {
+		this.desiredHeight = encoder.getDistance();
+	}
+	
+	public void setSpeed(double speed) {
+		this.mainMotor.set(ControlMode.PercentOutput, speed);
+		this.mainMotor.set(ControlMode.PercentOutput, speed);
+	}
+	
+	public void stabilize() {
+		this.setSpeed(stabilizeSpeed);
+	}
+	
+	/**
+	 * Sampling method. Returns true or false on if the subsystem is where
+	 * it should be. It tries to correct itself if not. In a command, call
+	 * this until you reach a number of 'trues' which means we are where 
+	 * it should be.
+	 * @param desiredHeight: How high you want to be from start, in inches.
+	 * @param speed: How fast to move
+	 * @param tolerance: How much error is allowed? Error must be allowed
+	 * @return True or False on if its where it should be
+	 */
+	public boolean maintainPosition(double speed, double tolerance) {
+		
+		double currentHeight = encoder.getDistance();
+		
+		if (Library.withinTolerance(currentHeight, this.desiredHeight, tolerance)) {
+			this.stabilize();
+			return true;
+		}
+		
+		if (currentHeight < desiredHeight) {
+			this.setSpeed(speed);
+		} else {
+			this.setSpeed(-.05);
+		}
+		
+		return false;
+	}
+	
 	
 }

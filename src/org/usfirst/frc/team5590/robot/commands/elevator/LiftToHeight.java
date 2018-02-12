@@ -7,8 +7,9 @@ import org.usfirst.frc.team5590.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Moves the climber to a specific height. This was FloorHeight, but 
+ * Moves the elevator to a specific height. This was FloorHeight, but 
  * now its abstract to handle any height passed to its parameters.
+ * Don't actually call me in OI! Use SetLiftHeight
  */
 public class LiftToHeight extends Command {
 	private final static Logger logger = Logger.getLogger(LiftToHeight.class.getName());
@@ -46,14 +47,13 @@ public class LiftToHeight extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initalizing() {
-		logger.info("Initializing floor height comand.");
-		Robot.elevator.StopLift();
+		logger.info("Initializing Climber comand.");
+		Robot.elevator.setDesiredHeight(height);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-	
-		if (Robot.elevator.LiftHeight(height, speed, tolerance)){
+		if (Robot.elevator.maintainPosition(speed, tolerance)){
 			++validSamples;
 		} else {
 			validSamples = 0;
@@ -70,13 +70,13 @@ public class LiftToHeight extends Command {
 	// Called once after isFinished returns true
 	protected void end() {
 		logger.info("Floor Height Command Done.");
-		Robot.elevator.StopLift();
+		Robot.elevator.stabilize();  // Small speed to keep where it is
 		
 	}
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
 		logger.info("Floor Height Command Interrupted.");
-		Robot.elevator.StopLift();
+		Robot.elevator.stabilize();
 	}
 }

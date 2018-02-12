@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * Moves the climber to a specific height. This was FloorHeight, but 
  * now its abstract to handle any height passed to its parameters.
+ * Don't actually call me in OI! Use SetClimberHeight
  */
 public class ClimbToHeight extends Command {
 	private final static Logger logger = Logger.getLogger(ClimbToHeight.class.getName());
