@@ -46,14 +46,13 @@ public class ClimbToHeight extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initalizing() {
-		logger.info("Initializing floor height comand.");
-		Robot.climber.maintainPosition();
+		logger.info("Initializing Climber comand.");
+		Robot.climber.setDesiredHeight(height);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-	
-		if (Robot.climber.climb(height, speed, tolerance)){
+		if (Robot.climber.maintainPosition(speed, tolerance)){
 			++validSamples;
 		} else {
 			validSamples = 0;
@@ -70,13 +69,13 @@ public class ClimbToHeight extends Command {
 	// Called once after isFinished returns true
 	protected void end() {
 		logger.info("Floor Height Command Done.");
-		Robot.climber.maintainPosition();
+		Robot.climber.stabilize();  // Small speed to keep where it is
 		
 	}
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
 		logger.info("Floor Height Command Interrupted.");
-		Robot.climber.maintainPosition();
+		Robot.climber.stabilize();
 	}
 }

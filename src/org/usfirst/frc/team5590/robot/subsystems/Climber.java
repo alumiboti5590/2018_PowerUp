@@ -19,15 +19,24 @@ public class Climber extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 	TalonSRX motor = new TalonSRX(RobotMap.CLIMBER_TALON_SRX);
-	private double speed = .7;
+	private double stabilizeSpeed = .1;
+	
 	public Encoder encoder;
 	private static final boolean INVERT_ENCODER = false;
-	private static final double CLIMB_DISTANCE_PER_PLUSE = .1;
+	private static final boolean INVERT_MOTOR = false;
+	
+	private double desiredHeight = 0;
+	
+	// 20 pulses per rev
+	// .203 pitch
+	
+	private static final double CLIMB_DISTANCE_PER_PLUSE = .01015;
 
 	public Climber() {
 		encoder = new Encoder(RobotMap.CLIMBER_ENCODER_SIGNAL_INPUT, RobotMap.CLIMBER_ENCODER_SIGNAL_OUTPUT,
 				INVERT_ENCODER, EncodingType.k2X);
 		encoder.setDistancePerPulse(CLIMB_DISTANCE_PER_PLUSE);
+		motor.setInverted(INVERT_MOTOR);
 	}
 
 	public void initDefaultCommand() {
@@ -36,16 +45,21 @@ public class Climber extends Subsystem {
 	}
 	
 	/**
-	 * Essentially 'stop', but doesnt drop
+	 * Set the height you want to go to. This is the
+	 * only command that needs called for moving the 
+	 * climber
 	 * @return
 	 */
-	public boolean maintainPosition() {
-		this.setSpeed(.05);
-		return false;
+	public void setDesiredHeight(double height) {
+		this.desiredHeight = height;
 	}
 	
 	public void setSpeed(double speed) {
 		this.motor.set(ControlMode.PercentOutput, speed);
+	}
+	
+	public void stabilize() {
+		this.setSpeed(stabilizeSpeed);
 	}
 	
 	/**
@@ -58,19 +72,19 @@ public class Climber extends Subsystem {
 	 * @param tolerance: How much error is allowed? Error must be allowed
 	 * @return True or False on if its where it should be
 	 */
-	public boolean climb(double desiredHeight, double speed, double tolerance) {
+	public boolean maintainPosition(double speed, double tolerance) {
 		
 		double currentHeight = encoder.getDistance();
 		
-		if (Library.withinTolerance(currentHeight, desiredHeight, tolerance)) {
-			this.maintainPosition();
+		if (Library.withinTolerance(currentHeight, this.desiredHeight, tolerance)) {
+			this.stabilize();
 			return true;
 		}
 		
 		if (currentHeight < desiredHeight) {
 			this.setSpeed(speed);
 		} else {
-			this.setSpeed(-.1);
+			this.setSpeed(-.05);
 		}
 		
 		return false;
