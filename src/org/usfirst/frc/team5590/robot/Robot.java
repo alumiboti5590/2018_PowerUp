@@ -2,6 +2,7 @@
 package org.usfirst.frc.team5590.robot;
 
 import org.usfirst.frc.team5590.robot.autonomous.AutoStrategy;
+import org.usfirst.frc.team5590.robot.autonomous.LeftApproachScale;
 import org.usfirst.frc.team5590.robot.autonomous.RightApproachScale;
 import org.usfirst.frc.team5590.robot.subsystems.BeltDrive;
 import org.usfirst.frc.team5590.robot.subsystems.Climber;
@@ -101,6 +102,11 @@ public class Robot extends IterativeRobot {
 		String autonomousString = preferences.getString("Autonomous", "RightApproachScale");
 		
 		switch (autonomousString) {
+		
+		case "LeftApproachScale":
+			autonomousCommand = new LeftApproachScale();
+			break;
+		
 		default:
 			autonomousCommand = new RightApproachScale();
 			break;
