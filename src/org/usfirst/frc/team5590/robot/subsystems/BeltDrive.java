@@ -21,8 +21,8 @@ public class BeltDrive extends Subsystem {
 	TalonSRX rightMotor;
 	
 	public BeltDrive() {
-		leftMotor = new TalonSRX(RobotMap.BELTDRIVE_RIGHT_MOTOR);
-		rightMotor = new TalonSRX(RobotMap.BELTDRIVE_RIGHT_MOTOR);
+		leftMotor = new TalonSRX(RobotMap.BELTDRIVE_RIGHT_TALON);
+		rightMotor = new TalonSRX(RobotMap.BELTDRIVE_RIGHT_TALON);
 	}
 
 	// Put methods for controlling this subsystem
