@@ -34,16 +34,11 @@ public class Drivetrain extends Subsystem {
 	// 1364 pulse / sec
 	// 10 ft per sec
 	// 11.367 inch per pulse 
-	private static final double DRIVE_DISTANCE_PER_PULSE_6IN = .112316;
-	
-	// 2045 pulse / sec
-	// 10 ft per sec
-	// 17.0416 pulse per inch
-	// .05867 inch per pulse 
-	//private static final double DRIVE_DISTANCE_PER_PULSE_4IN = .0879;
+	private static final double DRIVE_DISTANCE_PER_PULSE = 0.08656;
 
 	// Gyroscope metrics
 	private static final double GYRO_SENSITIVITY = .03;
+	private static final boolean INVERT_GYRO = true;
 
 	/* Joystick controller deadzones
 	 * Since the controllers are never really at 0, we say anything +/-
@@ -52,6 +47,8 @@ public class Drivetrain extends Subsystem {
 	private static final double DEADZONE_TOLERANCE_LEFT = .15;
 	private static final double DEADZONE_TOLERANCE_RIGHT = .15;
 	private static final double DEADZONE_TRIGGER_INVERT = .5;
+	private static final double LEFT_TRACK_MULTIPLIER = .8;
+	private static final double RIGHT_TRACK_MULTIPLIER = .8;
 
 	/**
 	 * Motors and attachments
@@ -85,7 +82,7 @@ public class Drivetrain extends Subsystem {
 			INVERT_LEFT_ENCODER,
 			EncodingType.k2X
 		);
-		leftEncoder.setDistancePerPulse(DRIVE_DISTANCE_PER_PULSE_6IN);
+		leftEncoder.setDistancePerPulse(DRIVE_DISTANCE_PER_PULSE);
 		
 		rightEncoder = new Encoder(
 			RobotMap.DT_RIGHT_ENCODER_SIGNAL_INPUT,
@@ -93,7 +90,7 @@ public class Drivetrain extends Subsystem {
 			INVERT_RIGHT_ENCODER,
 			EncodingType.k2X
 		);
-		rightEncoder.setDistancePerPulse(DRIVE_DISTANCE_PER_PULSE_6IN);
+		rightEncoder.setDistancePerPulse(DRIVE_DISTANCE_PER_PULSE);
 
 		// Create the Gyroscope
 		gyro.startThread();
@@ -146,22 +143,25 @@ public class Drivetrain extends Subsystem {
 		 * Based on if the right bumper trigger is pressed, switch which
 		 * side of the robot is either the front or back, making driving easier.
 		 */
-		if (Robot.oi.xboxController.getRightTrigger() < DEADZONE_TRIGGER_INVERT) {
+		if (Robot.oi.driveController.getRightTrigger() < DEADZONE_TRIGGER_INVERT) {
 			// Standard drive using the two thumb knobs
-			left = -1 * Robot.oi.xboxController.getLeftStickY();
-			right = -1 * Robot.oi.xboxController.getRightStickY();
+			left = -1 * Robot.oi.driveController.getLeftStickY();
+			right = -1 * Robot.oi.driveController.getRightStickY();
 		} else {
 			// Invert if the robot is facing with the back forward
 			// using the two thumb knobs
-			left = Robot.oi.xboxController.getRightStickY();
-			right = Robot.oi.xboxController.getLeftStickY();
+			left = Robot.oi.driveController.getRightStickY();
+			right = Robot.oi.driveController.getLeftStickY();
 		}
 
 		// Validate the speeds within the range and remove the deadzone
-		double validLeft = ensureDeadzone(this.ensureRange(left, MIN_SPEED, MAX_SPEED), DEADZONE_TOLERANCE_LEFT);
-		double validRight = ensureDeadzone(this.ensureRange(right, MIN_SPEED, MAX_SPEED), DEADZONE_TOLERANCE_RIGHT);
+		left = left * LEFT_TRACK_MULTIPLIER;
+		right = right * RIGHT_TRACK_MULTIPLIER;
+		
+		double validLeft = Library.ensureDeadzone(Library.ensureRange(left, MIN_SPEED, MAX_SPEED), DEADZONE_TOLERANCE_LEFT);
+		double validRight = Library.ensureDeadzone(Library.ensureRange(right, MIN_SPEED, MAX_SPEED), DEADZONE_TOLERANCE_RIGHT);
 
-		// Set the robot motors to the deadzoned, ranged, values.
+		// Set the robot motors to the deadzoned, ranged, values.)
 		robotDrive.tankDrive(validLeft, validRight);
 		
 	}
@@ -190,7 +190,7 @@ public class Drivetrain extends Subsystem {
 	public boolean driveToDistance(double desiredDistance, double speed, double tolerance) {
 		double distance = getEncoderAverage();
 		
-		double angle = gyro.getAngle();
+		double angle = gyro.getAngle() * (INVERT_GYRO ? -1 : 1);
 		
 		speed = scaleDownSpeed(speed, distance, desiredDistance);
 		
@@ -200,14 +200,24 @@ public class Drivetrain extends Subsystem {
 			
 		// Still need to go farther
 		} else if (distance < desiredDistance) {
-			robotDrive.drive(speed, -angle * GYRO_SENSITIVITY);
+			driveStraight(speed);
 			
 		// Overdriven
 		} else {
-			robotDrive.drive(-speed, -angle * GYRO_SENSITIVITY);
+			driveStraight(speed);
 		}
 		
 		return false;
+	}
+	
+	public void driveStraight(double speed) {
+		double angle = gyro.getAngle() * (INVERT_GYRO ? -1 : 1);
+		if (speed > 0) {
+			robotDrive.drive(speed, angle * GYRO_SENSITIVITY);
+		} else {
+			robotDrive.drive(speed, -angle * GYRO_SENSITIVITY);
+		}
+		
 	}
 	
 	private double scaleDownSpeed(double speed, double distanceCovered, double desiredDistance) {
@@ -234,37 +244,8 @@ public class Drivetrain extends Subsystem {
 		return true;
 	}
 	
-	
-	
 	public double getEncoderAverage() {
-		return Library.average(new double[] {leftEncoder.getDistance(), rightEncoder.getDistance()});
-	}
-
-	/**
-	 * Ensure that a value is within a range
-	 * 
-	 * @param value: the raw value
-	 * @param min: the min value allowed
-	 * @param max: the max value allowed
-	 * @return: value bounded within [min, max]
-	 */
-	private double ensureRange(double value, double min, double max) {
-		return Math.min(Math.max(value, min), max);
-	}
-
-	/**
-	 * Sets speed to 0 if its within the tolerance
-	 * 
-	 * @param speed: The raw speed value
-	 * @param tolerance: The tolerance above and below 0 to allow
-	 * @return: Either 0 or the raw speed
-	 */
-	private double ensureDeadzone(double speed, double tolerance) {
-		double directionalSpeed = Math.abs(speed);
-		if (directionalSpeed < tolerance) {
-			return 0;
-		}
-		return speed;
+		return leftEncoder.getDistance(); //Library.average(new double[] {leftEncoder.getDistance(), rightEncoder.getDistance()});
 	}
 
 }

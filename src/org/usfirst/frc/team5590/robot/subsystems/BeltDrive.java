@@ -13,13 +13,16 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * Controls the sucking in and sucking out of the cubes via a belt drive
  */
 public class BeltDrive extends Subsystem {
+	
+	private static final double COLLECT_SPEED = 1;
+	private static final double HOLD_SPEED = .2;
 
-	public static AnalogInput safetySwitch;
-	TalonSRX leftMotor = new TalonSRX(RobotMap.BELTDRIVE_LEFT_MOTOR);
-	TalonSRX rightMotor = new TalonSRX(RobotMap.BELTDRIVE_RIGHT_MOTOR);
-
+	TalonSRX leftMotor;
+	TalonSRX rightMotor;
+	
 	public BeltDrive() {
-		safetySwitch = new AnalogInput(RobotMap.HALT_MOTOR_SWITCH);
+		leftMotor = new TalonSRX(RobotMap.BELTDRIVE_RIGHT_MOTOR);
+		rightMotor = new TalonSRX(RobotMap.BELTDRIVE_RIGHT_MOTOR);
 	}
 
 	// Put methods for controlling this subsystem
@@ -28,17 +31,19 @@ public class BeltDrive extends Subsystem {
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
-
 		setDefaultCommand(new Collect());
 	}
 
-	public void intake() {
-		setBeltSpeed(.6);
-	}
-
-	// Closes the claw that houses the Power Cube
-	public void output() {
-		setBeltSpeed(-.6);
+	/**
+	 * Drives the beltdrives for the grabber at
+	 * certain speeds based on if we are holding
+	 * a cube or not
+	 * @param invert
+	 */
+	public void operate(boolean isHoldingCube, boolean invert) {
+		double speed = isHoldingCube ? HOLD_SPEED : COLLECT_SPEED;
+		speed = invert ? -speed : speed;
+		this.setBeltSpeed(speed);
 	}
 
 	// Deactivates the subsystem
@@ -49,13 +54,5 @@ public class BeltDrive extends Subsystem {
 	private void setBeltSpeed(double speed) {
 		leftMotor.set(ControlMode.PercentOutput, speed);
 		rightMotor.set(ControlMode.PercentOutput, -speed);
-	}
-
-	public boolean switchTriggered() {
-		if (safetySwitch.getVoltage() >= 3) {
-			return true;
-		} else {
-			return false;
-		}
 	}
 }

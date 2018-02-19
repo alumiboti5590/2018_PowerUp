@@ -17,12 +17,24 @@ public class XboxController extends Joystick {
 			buttonY,
 			buttonSelect,
 			buttonStart,
-			buttonLogo;
+			leftStickPress,
+			rightStickPress;
 	
 	// Bumpers are the top two buttons on the back
 	// of the controller, above the triggers
 	public Button leftBumper;
 	public Button rightBumper;	
+	
+//	kBumperLeft(5),
+//    kBumperRight(6),
+//    kStickLeft(9),
+//    kStickRight(10),
+//    kA(1),
+//    kB(2),
+//    kX(3),
+//    kY(4),
+//    kBack(7),
+//    kStart(8);
 	
 	/**
 	 * Constructor with the port the controller was plugged into
@@ -33,11 +45,12 @@ public class XboxController extends Joystick {
 		buttonB = new JoystickButton(this, 2);
 		buttonX = new JoystickButton(this, 3);
 		buttonY = new JoystickButton(this, 4);
-		buttonSelect= new JoystickButton(this, 5);
-		buttonStart = new JoystickButton(this, 6);
-		buttonLogo = new JoystickButton(this, 7);
-		leftBumper = new JoystickButton(this, 8);
-		rightBumper = new JoystickButton(this, 9);
+		leftBumper = new JoystickButton(this, 5);
+		rightBumper = new JoystickButton(this, 6);
+		buttonSelect= new JoystickButton(this, 7);
+		buttonStart = new JoystickButton(this, 8);
+		leftStickPress = new JoystickButton(this, 9);
+		rightStickPress = new JoystickButton(this, 10);
 	}
 
 	/**
@@ -91,10 +104,20 @@ public class XboxController extends Joystick {
 	}
 	
 	public double getDPadX () {
+		if (this.getPOV() == 0) {
+			return 1;
+		} else if (this.getPOV() == 180) {
+			return -1;
+		}
 		return 0;
 	}
 	
 	public double getDPadY () {
+		if (this.getPOV() == 90) {
+			return 1;
+		} else if (this.getPOV() == 270) {
+			return -1;
+		}
 		return 0;
 	}
 	
@@ -116,8 +139,11 @@ public class XboxController extends Joystick {
 	public boolean getButtonStart() {
 		return buttonStart.get();
 	}
-	public boolean getButtonLogo() {
-		return buttonLogo.get();
+	public boolean getButtonLeftStickPress() {
+		return leftStickPress.get();
+	}
+	public boolean getButtonRightStickPress() {
+		return rightStickPress.get();
 	}
 	
 }

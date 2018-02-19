@@ -2,7 +2,7 @@ package org.usfirst.frc.team5590.robot.subsystems;
 
 import org.usfirst.frc.team5590.robot.Library;
 import org.usfirst.frc.team5590.robot.RobotMap;
-import org.usfirst.frc.team5590.robot.commands.elevator.LiftToHeight;
+import org.usfirst.frc.team5590.robot.commands.elevator.ManualLift;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -23,28 +23,29 @@ public class Elevator extends Subsystem {
 	private double stabilizeSpeed = .1;
 	
 	public Encoder encoder;
-	private static final boolean INVERT_ENCODER = false;
+	private static final boolean INVERT_ENCODER = true;
 	private static final boolean INVERT_MAIN_MOTOR = false;
 	private static final boolean INVERT_ASSIST_MOTOR = false;
 	
-	private double desiredHeight = 0;
+	public double desiredHeight = 0;
+	public double beforeManualHeight = 0;
 	
 	// 20 pulses per rev
 	// .203 pitch
 	
-	private static final double CLIMB_DISTANCE_PER_PLUSE = .01015;
+	private static final double LIFT_DISTANCE_PER_PLUSE = 0.046061792138574;
 
 	public Elevator() {
 		encoder = new Encoder(RobotMap.ELEVATOR_ENCODER_SIGNAL_INPUT, RobotMap.ELEVATOR_ENCODER_SIGNAL_OUTPUT,
 				INVERT_ENCODER, EncodingType.k2X);
-		encoder.setDistancePerPulse(CLIMB_DISTANCE_PER_PLUSE);
+		encoder.setDistancePerPulse(LIFT_DISTANCE_PER_PLUSE);
 		mainMotor.setInverted(INVERT_MAIN_MOTOR);
 		assistMotor.setInverted(INVERT_ASSIST_MOTOR);
 	}
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
-		setDefaultCommand(new LiftToHeight(0, .1, 1));
+		setDefaultCommand(new ManualLift());
 	}
 	
 	/**
@@ -83,6 +84,7 @@ public class Elevator extends Subsystem {
 	public boolean maintainPosition(double speed, double tolerance) {
 		
 		double currentHeight = encoder.getDistance();
+		System.out.println(currentHeight + " : " + desiredHeight);
 		
 		if (Library.withinTolerance(currentHeight, this.desiredHeight, tolerance)) {
 			this.stabilize();
@@ -97,6 +99,27 @@ public class Elevator extends Subsystem {
 		
 		return false;
 	}
+	
+public boolean maintainPosition(double height, double speed, double tolerance) {
+		
+		double currentHeight = encoder.getDistance();
+		System.out.println(currentHeight + " : " + height);
+		
+		if (Library.withinTolerance(currentHeight, height, tolerance)) {
+			this.stabilize();
+			return true;
+		}
+		
+		if (currentHeight < desiredHeight) {
+			this.setSpeed(speed);
+		} else {
+			this.setSpeed(-speed);
+		}
+		
+		return false;
+	}
+	
+	
 	
 	
 }

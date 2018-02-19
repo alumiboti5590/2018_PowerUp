@@ -5,12 +5,12 @@ import org.usfirst.frc.team5590.robot.autonomous.AutoStrategy;
 import org.usfirst.frc.team5590.robot.autonomous.LeftApproachScale;
 import org.usfirst.frc.team5590.robot.autonomous.RightApproachScale;
 import org.usfirst.frc.team5590.robot.subsystems.BeltDrive;
-import org.usfirst.frc.team5590.robot.subsystems.Climber;
 import org.usfirst.frc.team5590.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team5590.robot.subsystems.Elevator;
 import org.usfirst.frc.team5590.robot.subsystems.Grabber;
 
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
@@ -32,7 +32,8 @@ public class Robot extends IterativeRobot {
 	public static final Grabber grabber = new Grabber();
 	public static final BeltDrive beltdrive = new BeltDrive();
 	public static final Elevator elevator = new Elevator();
-	public static final Climber climber = new Climber();
+	
+	Compressor compressor;
 	
 	public static Preferences preferences;
 	AutoStrategy autonomousCommand;
@@ -51,8 +52,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		CameraServer.getInstance().startAutomaticCapture();
+		//CameraServer.getInstance().startAutomaticCapture();
 		oi = new OI();
+		
+		compressor = new Compressor();
+		compressor.setClosedLoopControl(true);
+		compressor.start();
 	}
 
 	/**
@@ -153,6 +158,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		
+		 
 	}
 }

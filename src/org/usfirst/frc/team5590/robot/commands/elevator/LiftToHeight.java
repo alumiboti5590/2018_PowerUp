@@ -47,36 +47,30 @@ public class LiftToHeight extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initalizing() {
-		logger.info("Initializing Climber comand.");
+		System.out.println("Lifting to " + Robot.elevator.desiredHeight);
 		Robot.elevator.setDesiredHeight(height);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		if (Robot.elevator.maintainPosition(speed, tolerance)){
-			++validSamples;
-		} else {
-			validSamples = 0;
-		}
-		if (validSamples >= DESIRED_SAMPLES) this.state = State.COMPLETE;
-   
+		
+		Robot.elevator.maintainPosition(height, speed, tolerance);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return this.state == State.COMPLETE;
+		return false;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
-		logger.info("Floor Height Command Done.");
+		System.out.println("Finished lifting :o");
 		Robot.elevator.stabilize();  // Small speed to keep where it is
 		
 	}
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		logger.info("Floor Height Command Interrupted.");
 		Robot.elevator.stabilize();
 	}
 }

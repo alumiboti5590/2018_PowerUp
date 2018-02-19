@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj.command.Command;
 public class Collect extends Command {
 	
 	private final static Logger logger = Logger.getLogger(Collect.class.getName());
+	
+	private final static boolean INVERT_BELTS = false;
+	private final static double TRIGGER_SENSITIVITY = .5;
 
 	public Collect() {
 		requires(Robot.beltdrive);
@@ -25,13 +28,20 @@ public class Collect extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		// fill me in
-		if(!Robot.beltdrive.switchTriggered()){
-			Robot.beltdrive.intake();
-		} else {
-			Robot.beltdrive.beltStop();
+		
+		boolean isHoldingCube = false;
+		
+		// If button pressed, change speed
+		if (Robot.oi.assistController.getRightTrigger() > TRIGGER_SENSITIVITY) {
+			isHoldingCube = true;
 		}
-		// fill me in
+		
+		// If button pressed, output
+		if (Robot.oi.assistController.getLeftTrigger() > TRIGGER_SENSITIVITY) {
+			Robot.beltdrive.operate(isHoldingCube, INVERT_BELTS);
+		} else { // else suck in
+			Robot.beltdrive.operate(isHoldingCube, !INVERT_BELTS);
+		}		
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

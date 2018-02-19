@@ -1,10 +1,9 @@
 package org.usfirst.frc.team5590.robot;
 
-import org.usfirst.frc.team5590.robot.commands.ManualLiftDown;
-import org.usfirst.frc.team5590.robot.commands.ManualLiftUp;
 import org.usfirst.frc.team5590.robot.commands.OpenGrabber;
-import org.usfirst.frc.team5590.robot.commands.SuckOut;
-import org.usfirst.frc.team5590.robot.controllers.LogitechX3;
+import org.usfirst.frc.team5590.robot.commands.StraightJoystickDrive;
+import org.usfirst.frc.team5590.robot.commands.elevator.LiftToHeight;
+import org.usfirst.frc.team5590.robot.commands.elevator.ManualLift;
 import org.usfirst.frc.team5590.robot.controllers.XboxController;
 
 /**
@@ -13,12 +12,12 @@ import org.usfirst.frc.team5590.robot.controllers.XboxController;
  */
 public class OI {
 	// Ports for controllers
-	private static final int XBOX_PORT = 0;
-	private static final int LOGITECH_PORT = 1;
+	private static final int DRIVE_XBOX_PORT = 0;
+	private static final int ASSIST_XBOX_PORT = 1;
 		
 	// Controller objects
-	public XboxController xboxController;
-	public LogitechX3 logitechController;
+	public XboxController driveController;
+	public XboxController assistController;
 	
 	/**
 	 * TRIGGERING COMMANDS WITH BUTTONS
@@ -38,13 +37,19 @@ public class OI {
 	 * button.whenReleased(new ExampleCommand());
 	 */
 	public OI() {
-		xboxController = new XboxController(XBOX_PORT);
-		logitechController = new LogitechX3(LOGITECH_PORT);
+		driveController = new XboxController(DRIVE_XBOX_PORT);
+		assistController = new XboxController(ASSIST_XBOX_PORT);
 		
-
-		logitechController.button8.whileHeld(new SuckOut());
-		logitechController.button7.whileHeld(new OpenGrabber());
-		logitechController.button9.whileHeld(new ManualLiftUp());
-		logitechController.button5.whileHeld(new ManualLiftDown());
+		// Driving
+		driveController.buttonA.whileHeld(new StraightJoystickDrive());
+		
+		// Pneumatics Grabber
+		assistController.leftBumper.whileHeld(new OpenGrabber());
+		
+		// Lift
+		assistController.buttonX.whenPressed(new LiftToHeight(0));  // Ground height
+		assistController.buttonA.whenPressed(new LiftToHeight(36));  // Ground height
+		assistController.buttonB.whenPressed(new LiftToHeight(72));  // Scale height
+		assistController.buttonY.whileHeld(new ManualLift());       // Switch height
 	}
 }

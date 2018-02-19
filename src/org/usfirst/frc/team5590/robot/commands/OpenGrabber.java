@@ -44,6 +44,6 @@ public class OpenGrabber extends Command {
 	// subsystems is scheduled to run
 	protected void interrupted() {
 		
-		logger.info("Open Grabber Interrupted");
+		logger.info("InterruptedOpen Grabber");
 	}
 }

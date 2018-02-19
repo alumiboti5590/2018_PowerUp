@@ -36,8 +36,8 @@ public class RobotMap {
 	 * Beltdrive Subsystem
 	 */
 	// PWM Ports
-	public static final int BELTDRIVE_LEFT_MOTOR = 41;
-	public static final int BELTDRIVE_RIGHT_MOTOR = 40;
+	public static final int BELTDRIVE_LEFT_MOTOR = 1;
+	public static final int BELTDRIVE_RIGHT_MOTOR = 5;
 	
 	// Analog ports
 	public static final int HALT_MOTOR_SWITCH = 3;
@@ -46,22 +46,11 @@ public class RobotMap {
 	 * Elevator Subsystem
 	 */
 	// PWM Ports
-	public static final int ELEVATOR_TALON_SRX = 5;
-	public static final int ELEVATOR_TALON_SRX_ASSIST = 3;		
+	public static final int ELEVATOR_TALON_SRX = 4;
+	public static final int ELEVATOR_TALON_SRX_ASSIST = 2;		
 	
 	// DIO Ports
 	public static final int ELEVATOR_ENCODER_SIGNAL_INPUT = 4;
 	public static final int ELEVATOR_ENCODER_SIGNAL_OUTPUT = 5;
-	
-	/**
-	 * Climber subsystem
-	 */
-	// PWM Ports
-	public static final int CLIMBER_TALON_SRX = 6;
-	
-	// DIO Ports
-	public static final int CLIMBER_ENCODER_SIGNAL_INPUT = 6;
-	public static final int CLIMBER_ENCODER_SIGNAL_OUTPUT = 6;
-	
 }
 
