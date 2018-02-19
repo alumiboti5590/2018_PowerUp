@@ -29,15 +29,15 @@ public class RobotMap {
 	 * Grabber subsystem
 	 */
 	// PCM Ports
-	public static final int GRABBER_SOLENOID_IN = 2;
-	public static final int GRABBER_SOLENOID_OUT = 3;
+	public static final int GRABBER_SOLENOID_IN = 0;
+	public static final int GRABBER_SOLENOID_OUT = 1;
 	
 	/**
 	 * Beltdrive Subsystem
 	 */
 	// PWM Ports
-	public static final int BELTDRIVE_LEFT_TALON = 1;
-	public static final int BELTDRIVE_RIGHT_TALON = 2;
+	public static final int BELTDRIVE_LEFT_TALON = 5;
+	public static final int BELTDRIVE_RIGHT_TALON = 1;
 	
 	// Analog ports
 	public static final int HALT_MOTOR_SWITCH = 3;
@@ -45,9 +45,9 @@ public class RobotMap {
 	/**
 	 * Elevator Subsystem
 	 */
-	// PWM Ports
+	// CAN Ports
 	public static final int ELEVATOR_TALON_SRX = 4;
-	public static final int ELEVATOR_TALON_SRX_ASSIST = 5;		
+	public static final int ELEVATOR_TALON_SRX_ASSIST = 2;		
 	
 	// DIO Ports
 	public static final int ELEVATOR_ENCODER_SIGNAL_INPUT = 4;

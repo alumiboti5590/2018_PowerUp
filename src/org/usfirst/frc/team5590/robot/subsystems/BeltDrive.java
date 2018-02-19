@@ -14,15 +14,21 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class BeltDrive extends Subsystem {
 	
-	private static final double COLLECT_SPEED = 1;
+	private static final double COLLECT_SPEED = .5;
 	private static final double HOLD_SPEED = .2;
+	
+	private static final boolean INVERT_LEFT_MOTOR = false;
+	private static final boolean INVERT_RIGHT_MOTOR = false;
+
 
 	TalonSRX leftMotor;
 	TalonSRX rightMotor;
 	
 	public BeltDrive() {
-		leftMotor = new TalonSRX(RobotMap.BELTDRIVE_RIGHT_TALON);
+		leftMotor = new TalonSRX(RobotMap.BELTDRIVE_LEFT_TALON);
 		rightMotor = new TalonSRX(RobotMap.BELTDRIVE_RIGHT_TALON);
+		leftMotor.setInverted(INVERT_LEFT_MOTOR);
+		rightMotor.setInverted(INVERT_RIGHT_MOTOR);
 	}
 
 	// Put methods for controlling this subsystem
@@ -30,7 +36,7 @@ public class BeltDrive extends Subsystem {
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
-		// setDefaultCommand(new MySpecialCommand());
+		//setDefaultCommand(new MySpecialCommand());
 		setDefaultCommand(new Collect());
 	}
 

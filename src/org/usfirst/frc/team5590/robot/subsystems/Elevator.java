@@ -20,7 +20,7 @@ public class Elevator extends Subsystem {
 	// here. Call these from Commands.
 	TalonSRX mainMotor = new TalonSRX(RobotMap.ELEVATOR_TALON_SRX);
 	TalonSRX assistMotor = new TalonSRX(RobotMap.ELEVATOR_TALON_SRX_ASSIST);
-	private double stabilizeSpeed = .1;
+	private double stabilizeSpeed = 0;
 	
 	public Encoder encoder;
 	private static final boolean INVERT_ENCODER = true;
@@ -64,7 +64,7 @@ public class Elevator extends Subsystem {
 	
 	public void setSpeed(double speed) {
 		this.mainMotor.set(ControlMode.PercentOutput, speed);
-		this.mainMotor.set(ControlMode.PercentOutput, speed);
+		this.assistMotor.set(ControlMode.PercentOutput, speed);
 	}
 	
 	public void stabilize() {
@@ -84,7 +84,6 @@ public class Elevator extends Subsystem {
 	public boolean maintainPosition(double speed, double tolerance) {
 		
 		double currentHeight = encoder.getDistance();
-		System.out.println(currentHeight + " : " + desiredHeight);
 		
 		if (Library.withinTolerance(currentHeight, this.desiredHeight, tolerance)) {
 			this.stabilize();

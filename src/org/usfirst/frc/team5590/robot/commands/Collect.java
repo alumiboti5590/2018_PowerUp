@@ -32,16 +32,19 @@ public class Collect extends Command {
 		boolean isHoldingCube = false;
 		
 		// If button pressed, change speed
-		if (Robot.oi.assistController.getRightTrigger() > TRIGGER_SENSITIVITY) {
-			isHoldingCube = true;
-		}
+		//if (Robot.oi.assistController.getRightTrigger() > TRIGGER_SENSITIVITY) {
+			//isHoldingCube = true;
+		//}
 		
 		// If button pressed, output
 		if (Robot.oi.assistController.getLeftTrigger() > TRIGGER_SENSITIVITY) {
 			Robot.beltdrive.operate(isHoldingCube, INVERT_BELTS);
-		} else { // else suck in
+			System.out.println("Outputting");
+		} else if (Robot.oi.assistController.getRightTrigger() > TRIGGER_SENSITIVITY)     { // else suck in
 			Robot.beltdrive.operate(isHoldingCube, !INVERT_BELTS);
-		}		
+		} else {
+			Robot.beltdrive.beltStop();
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

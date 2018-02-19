@@ -25,7 +25,7 @@ public class ManualLift extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	
+    	Robot.elevator.desiredHeight = Robot.elevator.encoder.getDistance();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -37,7 +37,7 @@ public class ManualLift extends Command {
     			Robot.elevator.setSpeed(stickValue);
     			Robot.elevator.desiredHeight = Robot.elevator.encoder.getDistance();
     		} else {
-    			Robot.elevator.maintainPosition(.5, 2);
+    			Robot.elevator.maintainPosition(.2, 2);
     		}
     		
     		
@@ -51,12 +51,14 @@ public class ManualLift extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    		Robot.elevator.stabilize();
+    	Robot.elevator.saveCurrentHeightAsDesired();
+    	Robot.elevator.stabilize();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
     		Robot.elevator.stabilize();
+    		Robot.elevator.saveCurrentHeightAsDesired();
     }
 }
