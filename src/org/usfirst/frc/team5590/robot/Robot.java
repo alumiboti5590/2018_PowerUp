@@ -4,6 +4,7 @@ package org.usfirst.frc.team5590.robot;
 import org.usfirst.frc.team5590.robot.autonomous.AutoStrategy;
 import org.usfirst.frc.team5590.robot.autonomous.LeftApproachScale;
 import org.usfirst.frc.team5590.robot.autonomous.RightApproachScale;
+import org.usfirst.frc.team5590.robot.commands.elevator.LiftToHeight;
 import org.usfirst.frc.team5590.robot.subsystems.BeltDrive;
 import org.usfirst.frc.team5590.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team5590.robot.subsystems.Elevator;
@@ -119,12 +120,13 @@ public class Robot extends IterativeRobot {
 		
 		
 		// Schedule and run command
-		autonomousCommand.setValues(driveNearSide, scaleSide, switchSide, fastSpeed, slowSpeed);
-		autonomousCommand.scheduleCommand();
+		//autonomousCommand.setValues(driveNearSide, scaleSide, switchSide, fastSpeed, slowSpeed);
+		//autonomousCommand.scheduleCommand();
 
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
-			autonomousCommand.start();
+			new LiftToHeight(20).start();
+			//autonomousCommand.start();
 	}
 
 	/**

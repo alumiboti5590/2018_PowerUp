@@ -14,7 +14,7 @@ public class ManualLift extends Command {
 	
 	private final static Logger logger = Logger.getLogger(ManualLift.class.getName());
 	
-	private final static double MAX_SPEED = .8;
+	private final static double MAX_SPEED = 1;
 	
 	private static final double STICK_DEADZONE = .2;
 

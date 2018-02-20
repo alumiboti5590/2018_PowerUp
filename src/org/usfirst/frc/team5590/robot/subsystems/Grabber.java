@@ -33,13 +33,13 @@ public class Grabber extends Subsystem {
 
 	// Opens the claw that houses the Power Cube
 	public void clawsOpen() {
-		grabberSolenoid.set(DoubleSolenoid.Value.kForward);
+		grabberSolenoid.set(DoubleSolenoid.Value.kReverse);
 
 	}
 
 	// Closes the claw that houses the Power Cube
 	public void clawsClose() {
-		grabberSolenoid.set(DoubleSolenoid.Value.kReverse);
+		grabberSolenoid.set(DoubleSolenoid.Value.kForward);
 	}
 
 	// Deactivates the subsystem

@@ -33,7 +33,7 @@ public class Elevator extends Subsystem {
 	// 20 pulses per rev
 	// .203 pitch
 	
-	private static final double LIFT_DISTANCE_PER_PLUSE = 0.046061792138574;
+	private static final double LIFT_DISTANCE_PER_PLUSE = 0.028;
 
 	public Elevator() {
 		encoder = new Encoder(RobotMap.ELEVATOR_ENCODER_SIGNAL_INPUT, RobotMap.ELEVATOR_ENCODER_SIGNAL_OUTPUT,
@@ -93,7 +93,7 @@ public class Elevator extends Subsystem {
 		if (currentHeight < desiredHeight) {
 			this.setSpeed(speed);
 		} else {
-			this.setSpeed(-.05);
+			this.setSpeed(-.2);
 		}
 		
 		return false;

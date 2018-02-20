@@ -54,7 +54,13 @@ public class LiftToHeight extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		
-		Robot.elevator.maintainPosition(height, speed, tolerance);
+		if (Robot.elevator.encoder.getDistance() < height) {
+			Robot.elevator.setSpeed(1);
+		} else {
+			Robot.elevator.maintainPosition(.1, 2);
+		}
+		
+		//Robot.elevator.maintainPosition(height, speed, tolerance);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

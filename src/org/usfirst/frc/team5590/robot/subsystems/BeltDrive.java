@@ -39,6 +39,14 @@ public class BeltDrive extends Subsystem {
 		//setDefaultCommand(new MySpecialCommand());
 		setDefaultCommand(new Collect());
 	}
+	
+	public void output() {
+		this.setBeltSpeed(-COLLECT_SPEED);
+	}
+	
+	public void intake() {
+		this.setBeltSpeed(COLLECT_SPEED);
+	}
 
 	/**
 	 * Drives the beltdrives for the grabber at

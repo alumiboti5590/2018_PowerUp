@@ -36,7 +36,7 @@ public class RobotMap {
 	 * Beltdrive Subsystem
 	 */
 	// PWM Ports
-	public static final int BELTDRIVE_LEFT_TALON = 5;
+	public static final int BELTDRIVE_LEFT_TALON = 3;
 	public static final int BELTDRIVE_RIGHT_TALON = 1;
 	
 	// Analog ports

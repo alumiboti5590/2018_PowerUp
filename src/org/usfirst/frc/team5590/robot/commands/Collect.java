@@ -38,10 +38,10 @@ public class Collect extends Command {
 		
 		// If button pressed, output
 		if (Robot.oi.assistController.getLeftTrigger() > TRIGGER_SENSITIVITY) {
-			Robot.beltdrive.operate(isHoldingCube, INVERT_BELTS);
+			Robot.beltdrive.output();
 			System.out.println("Outputting");
 		} else if (Robot.oi.assistController.getRightTrigger() > TRIGGER_SENSITIVITY)     { // else suck in
-			Robot.beltdrive.operate(isHoldingCube, !INVERT_BELTS);
+			Robot.beltdrive.intake();
 		} else {
 			Robot.beltdrive.beltStop();
 		}
