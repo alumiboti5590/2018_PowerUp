@@ -1,9 +1,7 @@
 package org.usfirst.frc.team5590.robot;
 
-import org.usfirst.frc.team5590.robot.commands.OpenGrabber;
 import org.usfirst.frc.team5590.robot.commands.StraightJoystickDrive;
-import org.usfirst.frc.team5590.robot.commands.elevator.LiftToHeight;
-import org.usfirst.frc.team5590.robot.commands.elevator.ManualLift;
+import org.usfirst.frc.team5590.robot.commands.ToggleGrabber;
 import org.usfirst.frc.team5590.robot.controllers.XboxController;
 
 /**
@@ -44,12 +42,9 @@ public class OI {
 		driveController.buttonA.whileHeld(new StraightJoystickDrive());
 		
 		// Pneumatics Grabber
-		assistController.leftBumper.whileHeld(new OpenGrabber());
+		assistController.buttonA.whenPressed(new ToggleGrabber());
 		
 		// Lift
-		assistController.buttonX.whenPressed(new LiftToHeight(0));  // Ground height
-		assistController.buttonA.whenPressed(new LiftToHeight(36));  // Ground height
-		assistController.buttonB.whenPressed(new LiftToHeight(72));  // Scale height
-		assistController.buttonY.whileHeld(new ManualLift());       // Switch height
+		
 	}
 }
