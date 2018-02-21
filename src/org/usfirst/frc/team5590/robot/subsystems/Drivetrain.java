@@ -201,10 +201,9 @@ public class Drivetrain extends Subsystem {
 		// Still need to go farther
 		} else if (distance < desiredDistance) {
 			driveStraight(speed);
-			
 		// Overdriven
 		} else {
-			driveStraight(speed);
+			driveStraight(-speed);
 		}
 		
 		return false;

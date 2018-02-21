@@ -33,38 +33,38 @@ public class Robot extends IterativeRobot {
 	public static final Grabber grabber = new Grabber();
 	public static final BeltDrive beltdrive = new BeltDrive();
 	public static final Elevator elevator = new Elevator();
-	
+
 	Compressor compressor;
-	
+
 	public static Preferences preferences;
 	AutoStrategy autonomousCommand;
 	public static DriverStation ds = DriverStation.getInstance();
-	
+
 	/**
 	 * Initialize the Input/Output controllers below
 	 */
 	public static OI oi;
-	
+
 	String gameData;
 
 	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
+	 * This function is run when the robot is first started up and should be used
+	 * for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
 		CameraServer.getInstance().startAutomaticCapture();
 		oi = new OI();
-		
+
 		compressor = new Compressor();
 		compressor.setClosedLoopControl(true);
 		compressor.start();
 	}
 
 	/**
-	 * This function is called once each time the robot enters Disabled mode.
-	 * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
+	 * This function is called once each time the robot enters Disabled mode. You
+	 * can use it to reset any subsystem information you want to clear when the
+	 * robot is disabled.
 	 */
 	@Override
 	public void disabledInit() {
@@ -83,50 +83,54 @@ public class Robot extends IterativeRobot {
 
 	/**
 	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString code to get the auto name from the text box below the Gyro
+	 * between different autonomous modes using the dashboard. The sendable chooser
+	 * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
+	 * remove all of the chooser code and uncomment the getString code to get the
+	 * auto name from the text box below the Gyro
 	 *
 	 * You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons
-	 * to the switch structure below with additional strings & commands.
+	 * chooser code above (like the commented example) or additional comparisons to
+	 * the switch structure below with additional strings & commands.
 	 */
 	@Override
 	public void autonomousInit() {
+		
+		System.out.println("Auto Init Starting");
+		
 		// Get the field configuration
 		gameData = ds.getGameSpecificMessage();
-		
+
 		// Preferences from driver station
 		preferences = Preferences.getInstance();
-		
+
 		boolean driveNearSide = preferences.getBoolean("CrossBackwallSwitchSide", false);
 		double fastSpeed = preferences.getDouble("DriveFastSpeed", .8);
 		double slowSpeed = preferences.getDouble("DriveSlowSpeed", .4);
 		char scaleSide = gameData.charAt(1);
 		char switchSide = gameData.charAt(0);
 		String autonomousString = preferences.getString("Autonomous", "RightApproachScale");
-		
+
 		switch (autonomousString) {
-		
+
 		case "LeftApproachScale":
 			autonomousCommand = new LeftApproachScale();
 			break;
-		
+
 		default:
 			autonomousCommand = new RightApproachScale();
 			break;
 		}
-		
-		
+
 		// Schedule and run command
-		//autonomousCommand.setValues(driveNearSide, scaleSide, switchSide, fastSpeed, slowSpeed);
-		//autonomousCommand.scheduleCommand();
+		 autonomousCommand.setValues(driveNearSide, scaleSide, switchSide, 1, .6);
+		 autonomousCommand.scheduleCommand();
+		 
+		 System.out.println("Auto command scheduled");
 
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
-			new LiftToHeight(20).start();
-			//autonomousCommand.start();
+			System.out.println("Auto command started");
+			autonomousCommand.start();
 	}
 
 	/**
@@ -160,6 +164,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		 
+		drivetrain.joystickSpeed();
+		System.out.println(drivetrain.getEncoderAverage() + " : " +Robot.drivetrain.gyro.getAngle());
 	}
 }

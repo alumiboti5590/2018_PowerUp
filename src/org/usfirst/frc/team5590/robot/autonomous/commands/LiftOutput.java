@@ -1,4 +1,4 @@
-package org.usfirst.frc.team5590.robot.commands.elevator;
+package org.usfirst.frc.team5590.robot.autonomous.commands;
 
 import java.util.logging.Logger;
 
@@ -11,12 +11,15 @@ import edu.wpi.first.wpilibj.command.Command;
  * now its abstract to handle any height passed to its parameters.
  * Don't actually call me in OI! Use SetLiftHeight
  */
-public class LiftToHeight extends Command {
-	private final static Logger logger = Logger.getLogger(LiftToHeight.class.getName());
+public class LiftOutput extends Command {
+	private final static Logger logger = Logger.getLogger(LiftOutput.class.getName());
 
 	protected enum State {
 		PERFORMING, COMPLETE;
 	}
+	
+	private int count = 0;
+	private int NUM_COUNTS = 100;
 
 	private State state = State.PERFORMING;
 	private double speed = .7;
@@ -25,29 +28,30 @@ public class LiftToHeight extends Command {
 	// Sampling
 	private static final int DESIRED_SAMPLES = 7;
 	private int validSamples = 0;
-	private double tolerance = 1;
+	private double tolerance = 2;
 
-	public LiftToHeight(double height) {
+	public LiftOutput(double height) {
 		this.height = height;
 		requires(Robot.elevator);
 	}
 
-	public LiftToHeight(double height, double speed) {
+	public LiftOutput(double height, double speed) {
 		this.speed = speed;
 		this.height = height;
 		requires(Robot.elevator);
 	}
 
-	public LiftToHeight(double height, double speed, double tolerance) {
+	public LiftOutput(double height, double speed, double tolerance) {
 		this.speed = speed;
 		this.height = height;
 		this.tolerance = tolerance;
 		requires(Robot.elevator);
+		requires(Robot.beltdrive);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initalizing() {
-		System.out.println("Lifting to " + Robot.elevator.desiredHeight);
+		System.out.println("Lifting to " + height);
 		Robot.elevator.setDesiredHeight(height);
 	}
 
@@ -57,7 +61,13 @@ public class LiftToHeight extends Command {
 		if (Robot.elevator.encoder.getDistance() < height) {
 			Robot.elevator.setSpeed(1);
 		} else {
-			Robot.elevator.maintainPosition(.1, 2);
+			if (count < NUM_COUNTS) { // Basic timing
+				Robot.beltdrive.superIntake();
+				Robot.elevator.setSpeed(0);
+				count++;
+			} else {
+				this.state = State.COMPLETE;
+			}
 		}
 		
 		//Robot.elevator.maintainPosition(height, speed, tolerance);
@@ -65,12 +75,11 @@ public class LiftToHeight extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return false;
+		return this.state == State.COMPLETE;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
-		System.out.println("Finished lifting :o");
 		Robot.elevator.stabilize();  // Small speed to keep where it is
 		
 	}

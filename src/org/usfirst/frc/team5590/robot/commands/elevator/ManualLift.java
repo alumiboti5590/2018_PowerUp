@@ -37,7 +37,7 @@ public class ManualLift extends Command {
     			Robot.elevator.setSpeed(stickValue);
     			Robot.elevator.desiredHeight = Robot.elevator.encoder.getDistance();
     		} else {
-    			Robot.elevator.maintainPosition(.2, 2);
+    			Robot.elevator.maintainPosition(.2, 1);
     		}
     		
     		

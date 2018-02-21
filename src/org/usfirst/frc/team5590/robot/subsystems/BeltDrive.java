@@ -47,6 +47,10 @@ public class BeltDrive extends Subsystem {
 	public void intake() {
 		this.setBeltSpeed(COLLECT_SPEED);
 	}
+	
+	public void superIntake() {
+		this.setBeltSpeed(1);
+	}
 
 	/**
 	 * Drives the beltdrives for the grabber at

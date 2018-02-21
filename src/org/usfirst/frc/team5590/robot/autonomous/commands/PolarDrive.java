@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class PolarDrive extends CommandGroup {
 
     public PolarDrive(double theta, double radius, double speed) {
+    	
+    		System.out.println("***** Starting Polar Drive *****");
     		if (theta != 0) {
     			addSequential(new TurnAngle(theta));
     		}

@@ -26,10 +26,10 @@ public class DistanceDrive extends Command {
 
 	// Sampling to get exact
 
-	private static final int DESIRED_SAMPLES = 40;
-	private static final int DESIRED_TURN_SAMPLES = 5;
+	private static final int DESIRED_SAMPLES = 10;
+	private static final int DESIRED_TURN_SAMPLES = 3;
 	private int validSamples = 0;
-	private double tolerance = 2;
+	private double tolerance = 3;
 
 	public DistanceDrive(double distance) {
 		this.distance = distance;
@@ -56,40 +56,32 @@ public class DistanceDrive extends Command {
 	}
 
 	// Called repeatedly when this Command is scheduled to run
-	protected void execute() {
-		
-		logger.info("state: " + this.state);
-		
+	protected void execute() {	
 		switch (this.state) {
 
 		case INITIALIZING:
 			if (Robot.drivetrain.recalibrate())
 				this.state = State.PERFORMING;
-			logger.info("Drive Distance Initialized to " + Robot.drivetrain.getEncoderAverage());
+			logger.info("Drive Distance Initialized to " + distance);
 			break;
 
 		case PERFORMING:
 			// Sample whether our robot is in the correct position or not.
 			// Reset the samples if out of position
 			double accurateSpeed = validSamples > 0 ? -.01 : this.speed;
-			if (Robot.drivetrain.driveToDistance(distance, accurateSpeed, tolerance)) {
+			if (Robot.drivetrain.driveToDistance(distance, this.speed, tolerance)) {
 				++validSamples;
 			} else {
 				validSamples = 0;
 			}
+			
+			System.out.println(this.validSamples);
 
 			// If we have hit our correct sample rate
 			if (validSamples >= DESIRED_SAMPLES)
-				this.state = State.STRAIGHTEN;
+				this.state = State.CLEANING;
 			break;
 			
-		case STOP:
-			if (Robot.drivetrain.stop()) {
-				this.state = State.CLEANING;
-				validSamples = 0;
-			}
-			break;
-		
 		case STRAIGHTEN:
 			if (Robot.drivetrain.turn(0, .5, 1)) {
 				++validSamples;
@@ -99,8 +91,10 @@ public class DistanceDrive extends Command {
 
 			// If we have hit our correct sample rate
 			if (validSamples >= DESIRED_TURN_SAMPLES)
+				Robot.drivetrain.stop();
 				this.state = State.CLEANING;
 			break;
+
 				
 		case CLEANING:
 			if (Robot.drivetrain.recalibrate())
@@ -112,8 +106,6 @@ public class DistanceDrive extends Command {
 			Robot.drivetrain.stop();
 			this.state = State.COMPLETE;
 		}
-
-		logger.info("Distance: " + Robot.drivetrain.getEncoderAverage());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
