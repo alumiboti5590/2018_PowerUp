@@ -13,7 +13,7 @@ public class OI {
 	private static final int DRIVE_XBOX_PORT = 0;
 	private static final int ASSIST_XBOX_PORT = 1;
 		
-	// Controller objects
+	// Controller objects to manipulate
 	public XboxController driveController;
 	public XboxController assistController;
 	
@@ -35,16 +35,14 @@ public class OI {
 	 * button.whenReleased(new ExampleCommand());
 	 */
 	public OI() {
+		// Create the controllers to use them.
 		driveController = new XboxController(DRIVE_XBOX_PORT);
 		assistController = new XboxController(ASSIST_XBOX_PORT);
 		
-		// Driving
+		// Driving Controller
 		driveController.buttonA.whileHeld(new StraightJoystickDrive());
 		
 		// Pneumatics Grabber
-		assistController.buttonA.whenPressed(new ToggleGrabber());
-		
-		// Lift
-		
+		assistController.buttonA.whenPressed(new ToggleGrabber());	
 	}
 }

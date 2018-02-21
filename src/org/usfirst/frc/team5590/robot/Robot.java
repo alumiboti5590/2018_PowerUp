@@ -33,23 +33,30 @@ public class Robot extends IterativeRobot {
 	public static final Grabber grabber = new Grabber();
 	public static final BeltDrive beltdrive = new BeltDrive();
 	public static final Elevator elevator = new Elevator();
-
+	
+	public static OI oi;  // Input / Output
+	
+	// Compressor to run pneumatics
 	Compressor compressor;
 
-	public static Preferences preferences;
-	AutoStrategy autoCommand;
-	public static DriverStation ds = DriverStation.getInstance();
-
 	/**
-	 * Initialize the Input/Output controllers below
+	 * External Programs and Metrics
 	 */
-	public static OI oi;
-
+	// Preferences are gathered from the SmartDashboard.jar program.
+	// They allow changing of certain values without redeploying.
+	public static Preferences preferences;
+	
+	// The DriverStation program to get the game data (scoring positions) from
+	public static DriverStation ds = DriverStation.getInstance();
 	String gameData;
+	
+	// The autonomous command to run. Set in autonomousInit() below.
+	AutoStrategy autoCommand = new ApproachSwitch();;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
-	 * for any initialization code.
+	 * for any initialization code. It is used to start the camera feed, 
+	 * initialize controls, and start the compressor
 	 */
 	@Override
 	public void robotInit() {
@@ -57,6 +64,8 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 
 		compressor = new Compressor();
+		// Closed Loop means that the pressure regulator will automatically
+		// cut the compressor off when the system hits 120 PSI.
 		compressor.setClosedLoopControl(true);
 		compressor.start();
 	}
@@ -82,44 +91,27 @@ public class Robot extends IterativeRobot {
 	}
 
 	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable chooser
-	 * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
-	 * remove all of the chooser code and uncomment the getString code to get the
-	 * auto name from the text box below the Gyro
-	 *
-	 * You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons to
-	 * the switch structure below with additional strings & commands.
+	 * This gets run initial when autonomous is enabled. It is used
+	 * to select and schedule the autonomous
 	 */
 	@Override
 	public void autonomousInit() {
 		
-		System.out.println("Auto Init Starting");
-		
 		// Get the field configuration
 		gameData = ds.getGameSpecificMessage();
 
-		// Preferences from driver station
-		preferences = Preferences.getInstance();
-
-//		boolean driveNearSide = preferences.getBoolean("CrossBackwallSwitchSide", false);
-//		double fastSpeed = preferences.getDouble("DriveFastSpeed", .8);
-//		double slowSpeed = preferences.getDouble("DriveSlowSpeed", .4);
-//		char scaleSide = gameData.charAt(1);
-//		char switchSide = gameData.charAt(0);
-//		String autonomousString = preferences.getString("Autonomous", "RightApproachScale");
+		// Some configs for autonomous
 		boolean driveNearSide = false;
 		double fastSpeed = 1;
 		double slowSpeed = .4;
 		
+		// The game data for what sides are lit up
 		char scaleSide = gameData.charAt(1);
 		char switchSide = gameData.charAt(0);
 		
-		autoCommand = new ApproachSwitch();
+		// Set the values for the auto strategy
 		autoCommand.setValues(driveNearSide, scaleSide, switchSide, fastSpeed, slowSpeed);
 		autoCommand.scheduleCommand();
-		
 		if (autoCommand != null) {
 			autoCommand.start();
 		}

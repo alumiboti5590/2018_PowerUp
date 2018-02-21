@@ -8,49 +8,44 @@ package org.usfirst.frc.team5590.robot;
  * floating around.
  */
 public class RobotMap {
-	/**
-	 * Drivetrain subsystem
+	
+	/*
+	 * Prefix Legend: 
+	 * 
+	 * DT_: Drivetrain
+	 * GR_: Grabber
+	 * BD_: Beltdrive
+	 * EL_: Elevator
 	 */
-	// PWM Ports
-	public static final int DT_LEFT_CONTROLLER_PWM = 1;
-	public static final int DT_RIGHT_CONTROLLER_PWM = 0;
 	
-	// Gyroscope / SPI Port
-	public static final int GYROSCOPE_ANALOG_PORT = 0;
+	/**
+	 * PWM Values
+	 */
+	public static final int DT_RIGHT_CONTROLLER = 0;
+	public static final int DT_LEFT_CONTROLLER  = 1;
 	
-	// DIO Ports
-	public static final int DT_LEFT_ENCODER_SIGNAL_INPUT = 0;
-	public static final int DT_LEFT_ENCODER_SIGNAL_OUTPUT = 1;
-	
-	public static final int DT_RIGHT_ENCODER_SIGNAL_INPUT = 2;
+	/**
+	 * DIO Values
+	 */
+	public static final int DT_LEFT_ENCODER_SIGNAL_INPUT   = 0;
+	public static final int DT_LEFT_ENCODER_SIGNAL_OUTPUT  = 1;
+	public static final int DT_RIGHT_ENCODER_SIGNAL_INPUT  = 2;
 	public static final int DT_RIGHT_ENCODER_SIGNAL_OUTPUT = 3;
+	public static final int EL_ENCODER_SIGNAL_INPUT = 4;
+	public static final int EL_ENCODER_SIGNAL_OUTPUT = 5;
 	
 	/**
-	 * Grabber subsystem
+	 * PCM Values
 	 */
-	// PCM Ports
-	public static final int GRABBER_SOLENOID_IN = 0;
-	public static final int GRABBER_SOLENOID_OUT = 1;
+	public static final int GR_SOLENOID_IN = 0;
+	public static final int GR_SOLENOID_OUT = 1;
 	
 	/**
-	 * Beltdrive Subsystem
+	 * CAN Values
 	 */
-	// PWM Ports
-	public static final int BELTDRIVE_LEFT_TALON = 3;
-	public static final int BELTDRIVE_RIGHT_TALON = 1;
-	
-	// Analog ports
-	public static final int HALT_MOTOR_SWITCH = 3;
-	
-	/**
-	 * Elevator Subsystem
-	 */
-	// CAN Ports
-	public static final int ELEVATOR_TALON_SRX = 4;
-	public static final int ELEVATOR_TALON_SRX_ASSIST = 2;		
-	
-	// DIO Ports
-	public static final int ELEVATOR_ENCODER_SIGNAL_INPUT = 4;
-	public static final int ELEVATOR_ENCODER_SIGNAL_OUTPUT = 5;
+	public static final int BD_RIGHT_TALON = 1;
+	public static final int EL_TALON_SRX_ASSIST = 2;
+	public static final int BD_LEFT_TALON = 3;
+	public static final int EL_TALON_SRX = 4;
 }
 
