@@ -12,7 +12,7 @@ public class RightApproachScale extends AutoStrategy {
 	
 	private final static Logger logger = Logger.getLogger(RightApproachScale.class.getName());
 	
-	private final static double LIFT_HEIGHT = 75;
+	private final static double LIFT_HEIGHT = 77;
     
     public void scheduleCommand() {
     	
@@ -41,13 +41,8 @@ public class RightApproachScale extends AutoStrategy {
     		
     		addSequential(new PolarDrive(0, 194, fastSpeed));
     		addParallel(new LiftOutput(LIFT_HEIGHT));
-    		addSequential(new PolarDrive(-35, 65, .4));
-    		addSequential(new PolarDrive(8, 0, slowSpeed));
-    		
-//		addSequential(new PolarDrive(0, 288, fastSpeed));
-//		addParallel(new LiftOutput(LIFT_HEIGHT));
-//		addSequential(new PolarDrive(-80, 0, slowSpeed));
-//		addSequential(new PolarDrive(0, 5, fastSpeed));
+    		addSequential(new PolarDrive(-30, 64, .4));
+    		addSequential(new PolarDrive(5, 0, slowSpeed));
     }
     
     private void leftSideScaleThruBackWallDrive() {
@@ -63,7 +58,7 @@ public class RightApproachScale extends AutoStrategy {
     		addSequential(new PolarDrive(0, 222, fastSpeed));
     		addSequential(new PolarDrive(-90, 230, fastSpeed));
     		addParallel(new LiftOutput(LIFT_HEIGHT));
-    		addSequential(new PolarDrive(105, 50, .4));
+    		addSequential(new PolarDrive(105, 40, .2));
     }
     
 }
