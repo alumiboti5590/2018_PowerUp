@@ -42,7 +42,7 @@ public class RightApproachScale extends AutoStrategy {
     		addSequential(new PolarDrive(0, 194, fastSpeed));
     		addParallel(new LiftOutput(LIFT_HEIGHT));
     		addSequential(new PolarDrive(-35, 65, .4));
-    		addSequential(new PolarDrive(5, 0, slowSpeed));
+    		addSequential(new PolarDrive(8, 0, slowSpeed));
     		
 //		addSequential(new PolarDrive(0, 288, fastSpeed));
 //		addParallel(new LiftOutput(LIFT_HEIGHT));
