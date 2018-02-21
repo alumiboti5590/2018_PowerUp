@@ -21,8 +21,8 @@ public class Grabber extends Subsystem {
 		
 		// Create the solenoid on the right ports
 		grabberSolenoid = new DoubleSolenoid(
-			RobotMap.GRABBER_SOLENOID_IN, 
-			RobotMap.GRABBER_SOLENOID_OUT
+			RobotMap.GR_SOLENOID_IN, 
+			RobotMap.GR_SOLENOID_OUT
 		);
 	}
 

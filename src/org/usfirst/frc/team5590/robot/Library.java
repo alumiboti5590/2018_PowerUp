@@ -2,6 +2,11 @@ package org.usfirst.frc.team5590.robot;
 
 public class Library {
 
+	/**
+	 * Average an array of doubles
+	 * @param data: double array to average
+	 * @return the average of data
+	 */
 	public static double average(double[] data) {
 		double sum = 0;
 		for (double d : data) sum += d;
@@ -20,12 +25,21 @@ public class Library {
 		return Math.min(Math.max(value, min), max);
 	}
 	
+	/**
+	 * Checks whether or not a value is within tolerance of a 
+	 * certain goal.
+	 * @param value: Current value to check if correct
+	 * @param goal: Target value to reach
+	 * @param tolerance: Error allowed on either side of target
+	 * @return boolean on if value is within tolerance of target
+	 */
 	public static boolean withinTolerance(double value, double goal, double tolerance) {
 		return Math.abs(goal - value) <= tolerance;
 	}
 	
 	/**
-	 * Sets speed to 0 if its within the tolerance
+	 * Handles controller/joystick deadzones. Returns value
+	 * of zero if the `speed` is +- within the tolerance.
 	 * 
 	 * @param speed: The raw speed value
 	 * @param tolerance: The tolerance above and below 0 to allow

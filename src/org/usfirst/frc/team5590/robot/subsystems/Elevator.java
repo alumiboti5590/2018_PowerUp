@@ -18,8 +18,8 @@ public class Elevator extends Subsystem {
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
-	TalonSRX mainMotor = new TalonSRX(RobotMap.ELEVATOR_TALON_SRX);
-	TalonSRX assistMotor = new TalonSRX(RobotMap.ELEVATOR_TALON_SRX_ASSIST);
+	TalonSRX mainMotor = new TalonSRX(RobotMap.EL_TALON_SRX);
+	TalonSRX assistMotor = new TalonSRX(RobotMap.EL_TALON_SRX_ASSIST);
 	private double stabilizeSpeed = 0;
 	
 	public Encoder encoder;
@@ -36,7 +36,7 @@ public class Elevator extends Subsystem {
 	private static final double LIFT_DISTANCE_PER_PLUSE = 0.028;
 
 	public Elevator() {
-		encoder = new Encoder(RobotMap.ELEVATOR_ENCODER_SIGNAL_INPUT, RobotMap.ELEVATOR_ENCODER_SIGNAL_OUTPUT,
+		encoder = new Encoder(RobotMap.EL_ENCODER_SIGNAL_INPUT, RobotMap.EL_ENCODER_SIGNAL_OUTPUT,
 				INVERT_ENCODER, EncodingType.k2X);
 		encoder.setDistancePerPulse(LIFT_DISTANCE_PER_PLUSE);
 		mainMotor.setInverted(INVERT_MAIN_MOTOR);

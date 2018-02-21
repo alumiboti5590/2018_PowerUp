@@ -67,8 +67,8 @@ public class Drivetrain extends Subsystem {
 		// Create the new Robot Drive system, using the port mappings
 		// provided in the RobotMap, so we control the right motors.
 		robotDrive = new RobotDrive(
-				RobotMap.DT_LEFT_CONTROLLER_PWM,
-				RobotMap.DT_RIGHT_CONTROLLER_PWM
+				RobotMap.DT_LEFT_CONTROLLER,
+				RobotMap.DT_RIGHT_CONTROLLER
 		);
 		// Disable the Motor Safety Feature
 		// https://wpilib.screenstepslive.com/s/currentCS/m/java/l/599705-using-the-motor-safety-feature
