@@ -187,12 +187,12 @@ public class Drivetrain extends Subsystem {
 		return false;
 	}
 	
-	public boolean driveToDistance(double desiredDistance, double speed, double tolerance) {
+	public boolean driveToDistance(double desiredDistance, double speed, double tolerance, boolean avoidScaleDown) {
 		double distance = getEncoderAverage();
 		
-		double angle = gyro.getAngle() * (INVERT_GYRO ? -1 : 1);
-		
-		speed = scaleDownSpeed(speed, distance, desiredDistance);
+		if (!avoidScaleDown) {
+			speed = scaleDownSpeed(speed, distance, desiredDistance);
+		}
 		
 		if (Library.withinTolerance(distance, desiredDistance, tolerance)) {
 			this.stop();

@@ -22,4 +22,15 @@ public class PolarDrive extends CommandGroup {
     			addSequential(new DistanceDrive(radius, speed));
     		}
     }
+    
+    public PolarDrive(double theta, double radius, double speed, boolean avoidScaleDown) {
+    	
+		System.out.println("***** Starting Polar Drive *****");
+		if (theta != 0) {
+			addSequential(new TurnAngle(theta));
+		}
+		if (radius != 0) {
+			addSequential(new DistanceDrive(radius, speed, avoidScaleDown));
+		}
+}
 }

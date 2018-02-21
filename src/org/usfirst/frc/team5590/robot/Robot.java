@@ -1,10 +1,10 @@
 
 package org.usfirst.frc.team5590.robot;
 
+import org.usfirst.frc.team5590.robot.autonomous.ApproachSwitch;
 import org.usfirst.frc.team5590.robot.autonomous.AutoStrategy;
 import org.usfirst.frc.team5590.robot.autonomous.LeftApproachScale;
 import org.usfirst.frc.team5590.robot.autonomous.RightApproachScale;
-import org.usfirst.frc.team5590.robot.commands.elevator.LiftToHeight;
 import org.usfirst.frc.team5590.robot.subsystems.BeltDrive;
 import org.usfirst.frc.team5590.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team5590.robot.subsystems.Elevator;
@@ -37,7 +37,7 @@ public class Robot extends IterativeRobot {
 	Compressor compressor;
 
 	public static Preferences preferences;
-	AutoStrategy autonomousCommand;
+	AutoStrategy autoCommand;
 	public static DriverStation ds = DriverStation.getInstance();
 
 	/**
@@ -103,34 +103,26 @@ public class Robot extends IterativeRobot {
 		// Preferences from driver station
 		preferences = Preferences.getInstance();
 
-		boolean driveNearSide = preferences.getBoolean("CrossBackwallSwitchSide", false);
-		double fastSpeed = preferences.getDouble("DriveFastSpeed", .8);
-		double slowSpeed = preferences.getDouble("DriveSlowSpeed", .4);
+//		boolean driveNearSide = preferences.getBoolean("CrossBackwallSwitchSide", false);
+//		double fastSpeed = preferences.getDouble("DriveFastSpeed", .8);
+//		double slowSpeed = preferences.getDouble("DriveSlowSpeed", .4);
+//		char scaleSide = gameData.charAt(1);
+//		char switchSide = gameData.charAt(0);
+//		String autonomousString = preferences.getString("Autonomous", "RightApproachScale");
+		boolean driveNearSide = false;
+		double fastSpeed = 1;
+		double slowSpeed = .4;
+		
 		char scaleSide = gameData.charAt(1);
 		char switchSide = gameData.charAt(0);
-		String autonomousString = preferences.getString("Autonomous", "RightApproachScale");
-
-		switch (autonomousString) {
-
-		case "LeftApproachScale":
-			autonomousCommand = new LeftApproachScale();
-			break;
-
-		default:
-			autonomousCommand = new RightApproachScale();
-			break;
+		
+		autoCommand = new ApproachSwitch();
+		autoCommand.setValues(driveNearSide, scaleSide, switchSide, fastSpeed, slowSpeed);
+		autoCommand.scheduleCommand();
+		
+		if (autoCommand != null) {
+			autoCommand.start();
 		}
-
-		// Schedule and run command
-		 autonomousCommand.setValues(driveNearSide, scaleSide, switchSide, 1, .6);
-		 autonomousCommand.scheduleCommand();
-		 
-		 System.out.println("Auto command scheduled");
-
-		// schedule the autonomous command (example)
-		if (autonomousCommand != null)
-			System.out.println("Auto command started");
-			autonomousCommand.start();
 	}
 
 	/**
@@ -147,8 +139,8 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (autonomousCommand != null)
-			autonomousCommand.cancel();
+		if (autoCommand != null)
+			autoCommand.cancel();
 	}
 
 	/**

@@ -36,7 +36,6 @@ public class RightApproachScale extends AutoStrategy {
     }
     
     private void rightSideScale() {
-    		
     		logger.info("*** DRIVING TO RIGHT SCALE BETWEEN SCALE & SWITCH ***");
     		
     		addSequential(new PolarDrive(0, 194, fastSpeed));
@@ -45,6 +44,7 @@ public class RightApproachScale extends AutoStrategy {
     		addSequential(new PolarDrive(5, 0, slowSpeed));
     }
     
+    // Needs testing
     private void leftSideScaleThruBackWallDrive() {
     		logger.info("*** DRIVING TO LEFT SCALE BETWEEN WALL & SWITCH ***");
     		addSequential(new PolarDrive(0, 57, slowSpeed));
@@ -57,8 +57,9 @@ public class RightApproachScale extends AutoStrategy {
     		logger.info("*** DRIVING TO LEFT SCALE BETWEEN SCALE & SWITCH ***");
     		addSequential(new PolarDrive(0, 222, fastSpeed));
     		addSequential(new PolarDrive(-90, 230, fastSpeed));
-    		addParallel(new LiftOutput(LIFT_HEIGHT));
-    		addSequential(new PolarDrive(105, 40, .2));
+    		//addParallel(new LiftOutput(LIFT_HEIGHT));
+    		addSequential(new PolarDrive(105, 40, .25));
     }
+   
     
 }

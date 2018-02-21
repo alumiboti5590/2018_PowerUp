@@ -30,6 +30,7 @@ public class DistanceDrive extends Command {
 	private static final int DESIRED_TURN_SAMPLES = 3;
 	private int validSamples = 0;
 	private double tolerance = 3;
+	private boolean avoidScaledown = false;
 
 	public DistanceDrive(double distance) {
 		this.distance = distance;
@@ -39,6 +40,13 @@ public class DistanceDrive extends Command {
 	public DistanceDrive(double distance, double speed) {
 		this.speed = speed;
 		this.distance = distance;
+		requires(Robot.drivetrain);
+	}
+	
+	public DistanceDrive(double distance, double speed, boolean avoidScaledown) {
+		this.speed = speed;
+		this.distance = distance;
+		this.avoidScaledown = avoidScaledown;
 		requires(Robot.drivetrain);
 	}
 
@@ -69,7 +77,7 @@ public class DistanceDrive extends Command {
 			// Sample whether our robot is in the correct position or not.
 			// Reset the samples if out of position
 			double accurateSpeed = validSamples > 0 ? -.01 : this.speed;
-			if (Robot.drivetrain.driveToDistance(distance, this.speed, tolerance)) {
+			if (Robot.drivetrain.driveToDistance(distance, this.speed, tolerance, this.avoidScaledown)) {
 				++validSamples;
 			} else {
 				validSamples = 0;
