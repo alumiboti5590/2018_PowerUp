@@ -1,10 +1,8 @@
 
 package org.usfirst.frc.team5590.robot;
 
-import org.usfirst.frc.team5590.robot.autonomous.ApproachSwitch;
 import org.usfirst.frc.team5590.robot.autonomous.AutoStrategy;
-import org.usfirst.frc.team5590.robot.autonomous.LeftApproachScale;
-import org.usfirst.frc.team5590.robot.autonomous.RightApproachScale;
+import org.usfirst.frc.team5590.robot.autonomous.RightSide;
 import org.usfirst.frc.team5590.robot.subsystems.BeltDrive;
 import org.usfirst.frc.team5590.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team5590.robot.subsystems.Elevator;
@@ -51,7 +49,10 @@ public class Robot extends IterativeRobot {
 	String gameData;
 	
 	// The autonomous command to run. Set in autonomousInit() below.
-	AutoStrategy autoCommand = new ApproachSwitch();;
+	// The options for Auto right now are:
+	//   * new RightSide();  -- Starting on the right side of the field
+	//  * new LeftSide();  -- Starting on the left side of the field
+	AutoStrategy autoCommand = new RightSide();;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
